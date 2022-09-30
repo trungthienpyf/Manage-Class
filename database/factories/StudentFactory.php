@@ -16,7 +16,7 @@ class StudentFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'password' => '123', // password
+            'password' => '456', // password
             'phone' =>$this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
         ];

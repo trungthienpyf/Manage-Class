@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +13,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/login', [AccountController::class,'viewLogin'])->name('login');
+Route::get('/register', [AccountController::class,'viewRegister'])->name('register');
+Route::post('/signin', [AccountController::class,'login'])->name('signin');
+Route::get('/logout', [AccountController::class,'logout'])->name('logout');
+Route::middleware(['auth'])->group(function () {
+Route::get('/teacher', function () {
+    return view('index');
+})->name('admin');
 });
+Route::middleware(['auth:student'])->group(function () {
+    Route::get('/student', function () {
+        return view('index');
+    })->name('student');
+
+});
+//Route::get('/getSchedule', [ApiController::class,'getSchedule'])->name('getSchedule');
