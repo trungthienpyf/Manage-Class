@@ -32,13 +32,10 @@
                     <div class="col-12">
                         <div class="page-title-box">
                             <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Hyper</a></li>
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Layout</a></li>
-                                    <li class="breadcrumb-item active">Detached</li>
-                                </ol>
+                                @yield('breadcrum')
+
                             </div>
-                            <h4 class="page-title">Detached Layout</h4>
+                            <h4 class="page-title">{{ $title ??"" }}</h4>
                         </div>
                     </div>
                 </div>
