@@ -9,7 +9,7 @@
     <!-- App css -->
     <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/app-creative.min.css')}}" rel="stylesheet" type="text/css"  id="light-style">
-
+@stack('css')
 
 <body class="" data-layout="detached" data-layout-config="{&quot;layoutBoxed&quot;:false, &quot;leftSidebarCondensed&quot;:false, &quot;leftSidebarScrollable&quot;:false,&quot;darkMode&quot;:false, &quot;showRightSidebarOnStart&quot;: true}">
 <!-- Topbar Start -->
@@ -143,5 +143,5 @@
 <script src="assets/js/pages/demo.dashboard-crm.js"></script>
 <!-- end demo js-->
 
-
+@stack('js')
 

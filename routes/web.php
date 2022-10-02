@@ -30,7 +30,7 @@ Route::get('/teacher', function () {
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/student', function () {
         View::share('title', 'Student');
-        return view('index');
+        return view('calendar');
     })->name('student');
 
 });

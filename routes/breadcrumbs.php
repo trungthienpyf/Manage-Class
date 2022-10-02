@@ -14,9 +14,9 @@ Breadcrumbs::for('about', function ($trail) {
 });
 
 // Home > Blog
-Breadcrumbs::for('blog', function ($trail) {
+Breadcrumbs::for('calendar', function ($trail) {
     $trail->parent('home');
-    $trail->push('Blog', route('blog'));
+    $trail->push('calendar', route('admin'));
 });
 
 // Home > Blog > [Category]
