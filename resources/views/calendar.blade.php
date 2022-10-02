@@ -31,39 +31,42 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/vi.js'></script>
     <script>
-        {{--$.ajax({--}}
-        {{--    url: '{{route('api.getSchedule')}}',--}}
-        {{--    type: 'get',--}}
-        {{--    data: {id: '{{$id}}'},--}}
-        {{--    success: function (response) {--}}
-
-        {{--    }--}}
-        {{--})--}}
-
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            width: 1000,
-            initialView: 'timeGridWeek',
-            headerToolbar: {
-                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
-                center: 'title',
-                left:'today prev,next',
-                defaultView: 'timeGridWeek',
-            },
-
-            events: [
+        $.ajax({
+            url: '{{route('getSchedule')}}',
+            type: 'get',
+          {{--data: {id: '{{$id}}'},--}}
+            success: function (response) {
+                    console.log(response)
+            let test=[
                 { // this object will be "parsed" into an Event Object
                     title: 'Hoc tieng anh', // a property!
-                    start: "2022-09-20T06:56:09.000000Z", // a property!
-                    end: "2022-09-20T09:56:09.000000Z" ,// a property! ** see important note below about 'end' **
+                    start: "2022-09-30 22:52:16", // a property!
+                    end: "2022-10-01 02:52:16" ,// a property! ** see important note below about 'end' **
 
                 }
             ]
-        });
+              console.log(test)
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    width: 1000,
+                    initialView: 'timeGridWeek',
+                    headerToolbar: {
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+                        center: 'title',
+                        left:'today prev,next',
+                        defaultView: 'timeGridWeek',
+                    },
 
-        calendar.setOption('locale', 'vi');
+                    events:response
+                });
 
-        calendar.render();
+                calendar.setOption('locale', 'vi');
+
+                calendar.render();
+            }
+        })
+
+
 
 
     </script>
