@@ -42,9 +42,22 @@
                 <div class="row">
 
                     <!-- end col -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
 
+                                <div class="row">
+                                    <!-- end col-->
+
+                                @yield('content')
+                                    <!-- end col-->
+                                </div>
+                                <!-- end row -->
+
+                            </div> <!-- end card-body -->
+                        </div> <!-- end card-->
+                    </div>
                     <!-- end col -->
-                @yield('content')
                 <!-- end col -->
 
                     <!-- end col -->

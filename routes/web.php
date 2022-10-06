@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 
+use App\Http\Controllers\ClassScheduleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -24,8 +25,10 @@ Route::get('/logout', [AccountController::class,'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
 Route::get('/teacher', function () {
     View::share('title', 'Teacher');
-    return view('index');
-})->name('admin');
+    return view('index');})->name('admin');
+
+
+Route::get('/class',[ClassScheduleController::class,'index'])->name('class');
 });
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/student', function () {

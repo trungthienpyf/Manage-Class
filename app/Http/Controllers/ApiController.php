@@ -12,14 +12,14 @@ class ApiController extends Controller
     public function getSchedule()
     {
         $q = ClassSchedule::query()
-            ->select('time_start as start', 'time_end as end')
+            ->select('time_start as start', 'time_end as end','weekdays')
             ->whereHas('students', function ($query) {
                 $query->where('id', 1);
             })
             ->where('class_schedules.id', 1)
             ->first();
 
-        return $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays(WeekdaysClassEnum::T2T5), date('d-m-Y', strtotime($q->start)), date('d-m-Y', strtotime($q->end)));
+        return $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($q->weekdays), date('d-m-Y', strtotime($q->start)), date('d-m-Y', strtotime($q->end)));
     }
 
     function weekDaysBetween($requiredDays, $start, $end)

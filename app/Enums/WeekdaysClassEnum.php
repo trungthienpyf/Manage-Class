@@ -19,6 +19,36 @@ final class WeekdaysClassEnum extends Enum
     const T5T7 = 6;
     const T2T4T6 = 7;
     const T3T5T7 = 8;
+    public static function  getNameEnum($value)
+    {
+        switch ($value) {
+            case 1:
+                return 'T2-T5';
+                break;
+            case 2:
+                return 'T2-T6';
+                break;
+            case 3:
+                return 'T4-T7';
+                break;
+            case 4:
+                return 'T3-T5';
+                break;
+            case 5:
+                return 'T3-T6';
+                break;
+            case 6:
+                return 'T5-T7';
+                break;
+            case 7:
+                return 'T2-T4-T6';
+                break;
+            case 8:
+                return 'T3-T5-T7';
+                break;
+        }
+    }
+
     public static function  getWeekdays($value)
     {
         switch ($value) {
