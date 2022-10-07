@@ -12,4 +12,9 @@ class Teacher extends Model  implements Authenticatable
     use \Illuminate\Auth\Authenticatable;
     use HasFactory;
    protected $fillable=['name','phone','password','level'];
+
+    public function classSchedules()
+    {
+        return $this->hasMany(ClassSchedule::class);
+   }
 }

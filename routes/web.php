@@ -17,19 +17,28 @@ use Illuminate\Support\Facades\View;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [AccountController::class,'viewLogin'])->name('login');
-Route::get('/login', [AccountController::class,'viewLogin'])->name('login');
-Route::get('/register', [AccountController::class,'viewRegister'])->name('register');
-Route::post('/signin', [AccountController::class,'login'])->name('signin');
-Route::get('/logout', [AccountController::class,'logout'])->name('logout');
+Route::get('/', [AccountController::class, 'viewLogin'])->name('login');
+Route::get('/login', [AccountController::class, 'viewLogin'])->name('login');
+Route::get('/register', [AccountController::class, 'viewRegister'])->name('register');
+Route::post('/signin', [AccountController::class, 'login'])->name('signin');
+Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
-Route::get('/teacher', function () {
-    View::share('title', 'Teacher');
-    return view('index');})->name('admin');
+    Route::get('/teacher', function () {
+        View::share('title', 'Teacher');
+        return view('index');
+    })->name('admin');
+
+    Route::name("admin.")->prefix('admin')->group(function () {
+        Route::resources([
+            'class' => ClassScheduleController::class,
+
+        ]);
 
 
-Route::get('/class',[ClassScheduleController::class,'index'])->name('class');
+    });
 });
+
+
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/student', function () {
         View::share('title', 'Student');

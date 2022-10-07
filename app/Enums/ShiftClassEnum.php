@@ -14,17 +14,24 @@ final class ShiftClassEnum extends Enum
     const ShiftOne =   1;
     const ShiftTwo =   2;
     const ShiftThree = 3;
+    public  static function  getViewArray(){
+        return[
+            'Sáng'=>self::ShiftOne,
+            'Chiều'=>self::ShiftTwo,
+            'Tối'=>self::ShiftThree,
+        ];
+    }
     public static function getShift($value)
     {
         switch ($value) {
             case 1:
-                return 'Shift One';
+                return 'Sáng';
                 break;
             case 2:
-                return 'Shift Two';
+                return 'Chiều';
                 break;
             case 3:
-                return 'Shift Three';
+                return 'Tối';
                 break;
         }
     }

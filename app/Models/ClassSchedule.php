@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\ShiftClassEnum;
+use App\Enums\WeekdaysClassEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,9 +11,41 @@ use Illuminate\Database\Eloquent\Model;
 class ClassSchedule extends Model
 {
 
-    public $timestamps=false;
+    public $timestamps = false;
     use HasFactory;
-    public function students() {
+
+    public function students()
+    {
         return $this->belongsToMany(Student::class, 'class_students', 'classSchedule_id', 'student_id');
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo(Teacher::class);
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
+
+    public function getNameScheduleAttribute()
+    {
+        $weeksday = implode("-", WeekdaysClassEnum::getWeekdays($this->weekdays));
+
+        return $this->subject->name . " " . $weeksday;
+    }
+
+    public function getNameWeekdayAttribute()
+    {
+        $weeksday = WeekdaysClassEnum::getWeekdays($this->weekdays);
+
+        return   "Thứ " . implode('-', $weeksday);
+    }
+    public function getNameShiftAttribute(){
+        return ShiftClassEnum::getShift($this->shift);
+    }
+    public function getStudentCountAttribute(){
+        return $this->students->count();
     }
 }

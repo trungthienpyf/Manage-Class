@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassSchedulesTable extends Migration
+class CreateRegisterTeachesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,14 @@ class CreateClassSchedulesTable extends Migration
      */
     public function up()
     {
-        Schema::create('class_schedules', function (Blueprint $table) {
+        Schema::create('register_teaches', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id')->nullable()->constrained('teachers');
-            $table->foreignId('subject_id')->constrained('subjects');
-            $table->timestamp('time_start');
-            $table->timestamp('time_end');
-            $table->tinyInteger('status')->comment('StatusClassScheduleEnums')->default(0);
             $table->tinyInteger('weekdays')->comment('WeekDaysEnums');
             $table->tinyInteger('shift')->comment('ShiftEnums');
+            $table->tinyInteger('status')->comment('StatusRegisterTeachEnums')->default(0);
+            $table->foreignId('teacher_id')->constrained('teachers');
+            $table->foreignId('subject_id')->constrained('subjects');
+            $table->foreignId('classSchedule_id')->nullable()->constrained('class_schedules');
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ class CreateClassSchedulesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_schedules');
+        Schema::dropIfExists('register_teaches');
     }
 }
