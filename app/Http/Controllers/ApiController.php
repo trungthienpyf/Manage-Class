@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\WeekdaysClassEnum;
 use App\Models\ClassSchedule;
+use App\Models\Teacher;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -55,5 +56,13 @@ class ApiController extends Controller
             }
 
         return response()->json($weekdays);
+    }
+    public function getTeachers(Request $request){
+        $teachers= Teacher::query()
+            ->whereDoesntHave('classSchedules',function ($query,$request){
+                $query->where('shift',$request->shift);
+                $query->where('weekdays',$request->weekdays);
+            })->get();
+        return response()->json($teachers);
     }
 }

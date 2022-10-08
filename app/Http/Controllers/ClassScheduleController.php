@@ -40,6 +40,7 @@ class ClassScheduleController extends Controller
         View::share('title', 'Thêm lớp');
 
         $subjects = Subject::all();
+
         $timeLines = TimeLineEnum::getViewArray();
         $shifts = ShiftClassEnum::getViewArray();
         $weekdays= WeekdaysClassEnum::getViewArray();
@@ -49,6 +50,7 @@ class ClassScheduleController extends Controller
             'timeLines'=>$timeLines,
             'shifts'=>$shifts,
             'weekdays'=>$weekdays,
+
             ]);
     }
 
@@ -56,13 +58,20 @@ class ClassScheduleController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         //
-
+        $time_start  =$request->time_start;
+        $time_end  =$request->time_end;
+       $timeOfShift= ShiftClassEnum::getTimeOfShift($request->shift);
+        $request->merge([
+            'time_start' => $time_start ." ".$timeOfShift[0],
+            'time_end' => $time_end ." ". $timeOfShift[1],
+        ]);
         ClassSchedule::create($request->all());
+
         return redirect()->route('admin.class.index');
     }
 

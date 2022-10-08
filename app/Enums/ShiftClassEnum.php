@@ -35,4 +35,19 @@ final class ShiftClassEnum extends Enum
                 break;
         }
     }
+
+    public function getTimeOfShift($value)
+    {
+        switch ($value) {
+            case 1:
+                return ['07:30:00','11:30:00'];
+                break;
+            case 2:
+                return ['12:30:00','14:30:00'];
+                break;
+            case 3:
+                return ['18:00:00','20:30:00'];
+                break;
+        }
+    }
 }

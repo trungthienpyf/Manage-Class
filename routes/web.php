@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 
 use App\Http\Controllers\ClassScheduleController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\View;
 |
 */
 Route::get('/', [AccountController::class, 'viewLogin'])->name('login');
+Route::get('/test', [TestController::class, 'test'])->name('login');
 Route::get('/login', [AccountController::class, 'viewLogin'])->name('login');
 Route::get('/register', [AccountController::class, 'viewRegister'])->name('register');
 Route::post('/signin', [AccountController::class, 'login'])->name('signin');

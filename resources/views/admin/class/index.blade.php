@@ -62,7 +62,7 @@
                     <td>{{$class->student_count}}</td>
                     <td>{{$class->start_date}}</td>
 
-                        <td>{{ !empty($class->teacher) ?$class->teacher->name:''}}</td>
+                        <td>{{ !empty($class->teacher) ? $class->teacher->name:''}}</td>
 
 
                     <td>
