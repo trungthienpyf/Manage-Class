@@ -40,6 +40,7 @@
         <table id="basic-datatable" class="table dt-responsive nowrap w-100">
             <thead>
             <tr>
+                <th>#</th>
                 <th>Tên lớp</th>
                 <th>Tên môn</th>
                 <th>Ca</th>
@@ -50,18 +51,20 @@
                 <th>Hành động</th>
             </tr>
             </thead>
-
-
             <tbody>
             @foreach($classes as $class)
                 <tr>
+                    <td>{{$class->id}}</td>
                     <td>{{$class->name_schedule}}</td>
                     <td>{{$class->subject->name}}</td>
                     <td>{{$class->name_shift}}</td>
                     <td>{{$class->name_weekday}}</td>
                     <td>{{$class->student_count}}</td>
                     <td>{{$class->start_date}}</td>
-                    <td>{{$class->teacher->name}}</td>
+
+                        <td>{{ !empty($class->teacher) ?$class->teacher->name:''}}</td>
+
+
                     <td>
                         {{--     <a href="{{route('admin.class.edit', $class->id)}}" class="btn btn-primary btn-sm">Sửa</a>
                                    <a href="{{route('admin.class.delete', $class->id)}}" class="btn btn-danger btn-sm">Xóa</a> --}}

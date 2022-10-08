@@ -11,27 +11,30 @@ use BenSampo\Enum\Enum;
  */
 final class WeekdaysClassEnum extends Enum
 {
-    const T2T5 =   1;
-    const T2T6 =   2;
+    const T2T5 = 1;
+    const T2T6 = 2;
     const T4T7 = 3;
     const T3T5 = 4;
     const T3T6 = 5;
     const T5T7 = 6;
     const T2T4T6 = 7;
     const T3T5T7 = 8;
-    public function getViewArray(){
+
+    public function getViewArray()
+    {
         return [
-            "Thứ 2-5"=>self::T2T5,
-            "Thứ 2-6"=>self::T2T6,
-            "Thứ 4-7"=>self::T4T7,
-            "Thứ 3-5"=>self::T3T5,
-            "Thứ 3-6"=>self::T3T6,
-            "Thứ 5-7"=>self::T5T7,
-            "Thứ 2-4-6"=>self::T2T4T6,
-            "Thứ 3-5-7"=>self::T3T5T7,
+            "Thứ 2-5" => self::T2T5,
+            "Thứ 2-6" => self::T2T6,
+            "Thứ 4-7" => self::T4T7,
+            "Thứ 3-5" => self::T3T5,
+            "Thứ 3-6" => self::T3T6,
+            "Thứ 5-7" => self::T5T7,
+            "Thứ 2-4-6" => self::T2T4T6,
+            "Thứ 3-5-7" => self::T3T5T7,
         ];
     }
-    public static function  getNameEnum($value)
+
+    public static function getNameEnum($value)
     {
         switch ($value) {
             case 1:
@@ -61,7 +64,7 @@ final class WeekdaysClassEnum extends Enum
         }
     }
 
-    public static function  getWeekdays($value)
+    public static function getWeekdays($value)
     {
         switch ($value) {
             case 1:

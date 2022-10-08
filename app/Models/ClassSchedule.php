@@ -11,9 +11,19 @@ use Illuminate\Database\Eloquent\Model;
 class ClassSchedule extends Model
 {
 
-    public $timestamps = false;
-    use HasFactory;
 
+    use HasFactory;
+    protected $fillable=[
+
+        'shift',
+        'weekdays',
+        'time_line',
+        'time_start',
+        'time_end',
+        'teacher_id',
+        'subject_id',
+
+    ];
     public function students()
     {
         return $this->belongsToMany(Student::class, 'class_students', 'classSchedule_id', 'student_id');

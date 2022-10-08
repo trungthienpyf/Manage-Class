@@ -15,13 +15,16 @@ class CreateClassSchedulesTable extends Migration
     {
         Schema::create('class_schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id')->nullable()->constrained('teachers');
-            $table->foreignId('subject_id')->constrained('subjects');
+
             $table->timestamp('time_start');
             $table->timestamp('time_end');
             $table->tinyInteger('status')->comment('StatusClassScheduleEnums')->default(0);
+            $table->tinyInteger('time_line')->comment('TimeLineEnums')->default(0);
+
             $table->tinyInteger('weekdays')->comment('WeekDaysEnums');
             $table->tinyInteger('shift')->comment('ShiftEnums');
+            $table->foreignId('teacher_id')->nullable()->constrained('teachers');
+            $table->foreignId('subject_id')->constrained('subjects');
             $table->timestamps();
         });
     }

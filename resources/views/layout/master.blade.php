@@ -9,6 +9,7 @@
     <!-- App css -->
     <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/app-creative.min.css')}}" rel="stylesheet" type="text/css"  id="light-style">
+
 @stack('css')
 
 <body class="" data-layout="detached" data-layout-config="{&quot;layoutBoxed&quot;:false, &quot;leftSidebarCondensed&quot;:false, &quot;leftSidebarScrollable&quot;:false,&quot;darkMode&quot;:false, &quot;showRightSidebarOnStart&quot;: true}">
@@ -155,6 +156,6 @@
 <!-- demo app -->
 <script src="assets/js/pages/demo.dashboard-crm.js"></script>
 <!-- end demo js-->
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 @stack('js')
 

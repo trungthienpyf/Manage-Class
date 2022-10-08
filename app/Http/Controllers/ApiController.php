@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Enums\WeekdaysClassEnum;
 use App\Models\ClassSchedule;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class ApiController extends Controller
 {
@@ -43,5 +44,16 @@ class ApiController extends Controller
         }
 
         return array_values($result);
+    }
+    public function getWeekdays(Request $request){
+        $weekdays=WeekdaysClassEnum::getViewArray();
+            if($request->id==3){
+
+                $weekdays=  array_slice($weekdays, -2);
+
+                return response()->json($weekdays);
+            }
+
+        return response()->json($weekdays);
     }
 }
