@@ -26,7 +26,8 @@
                 <div class="dt-buttons btn-group">
                     <button class="btn btn-secondary buttons-copy buttons-html5" tabindex="0"
                             aria-controls="datatable-buttons" type="button"><span>Copy</span></button>
-                    <a href="{{route('admin.class.create')}}" class="btn btn-info buttons-print text-white" type="button"><span>Tạo lớp</span></a>
+                    <a href="{{route('admin.class.create')}}" class="btn btn-info buttons-print text-white"
+                       type="button"><span>Tạo lớp</span></a>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -37,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+        <table id="basic-datatable" class="table dt-responsive nowrap w-100" >
             <thead>
             <tr>
                 <th>#</th>
@@ -48,6 +49,7 @@
                 <th>Số lượng sinh viên</th>
                 <th>Ngày khai giảng dự kiến</th>
                 <th>Giảng viên</th>
+                <th>Phòng</th>
                 <th>Hành động</th>
             </tr>
             </thead>
@@ -62,10 +64,11 @@
                     <td>{{$class->student_count}}</td>
                     <td>{{$class->start_date}}</td>
 
-                        <td>{{ !empty($class->teacher) ? $class->teacher->name:''}}</td>
+                    <td>{{ !empty($class->teacher) ? $class->teacher->name:''}}</td>
 
-
+                    <td>{{ !empty($class->room) ? $class->room->name:''}}</td>
                     <td>
+
                         {{--     <a href="{{route('admin.class.edit', $class->id)}}" class="btn btn-primary btn-sm">Sửa</a>
                                    <a href="{{route('admin.class.delete', $class->id)}}" class="btn btn-danger btn-sm">Xóa</a> --}}
                         <a href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></a>

@@ -22,13 +22,17 @@ class ClassSchedule extends Model
         'time_end',
         'teacher_id',
         'subject_id',
+        'room_id',
 
     ];
     public function students()
     {
         return $this->belongsToMany(Student::class, 'class_students', 'classSchedule_id', 'student_id');
     }
-
+    public function room()
+    {
+        return $this->belongsTo(Room::class);
+    }
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);

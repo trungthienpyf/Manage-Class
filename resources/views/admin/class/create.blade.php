@@ -66,7 +66,6 @@
                                             <option value="{{$timeLine}}">{{$key}}</option>
                                         @endforeach
                                     </select>
-
                                 </div>
                                 <div class="form-group d-none">
                                     <label>Ngày dự kiến khai giảng</label>
@@ -81,13 +80,11 @@
                                 </div>
 
                                 <div class="form-group d-none">
-                                    <label for="teacher">Giáo viên</label>
-                                    <select class="form-control select2" id="teacher" name="teacher_id" data-toggle="select2">
-                                        <option value=""></option>
-
+                                    <label for="room">Phòng</label>
+                                    <select class="form-control select2" id="room" name="room_id" data-toggle="select2">
                                     </select>
-                                </div>
 
+                                </div>
                                 <div class="form-group mb-0 justify-content-end row">
                                     <div class="col-9">
                                         <button type="submit" class="btn btn-info  ">Tạo lớp</button>
@@ -148,16 +145,8 @@
 
                         </div>
                     </div>
-
-
-
-
                 </form>
             </div>
-
-
-
-
 
 @endsection
 <!-- end row-->
@@ -167,17 +156,50 @@
     <script>
         $(document).ready(function () {
 
+            function loadRoom(shift,weekdays,time_start,time_end) {
+
+                $.ajax({
+                    url: "{{route('getRooms')}}",
+                    type: "POST",
+                    data: {
+                        shift: shift,
+                        weekdays: weekdays,
+                        time_start: time_start,
+                        time_end: time_end,
+                    },
+                    success: function (response) {
+                        console.log(response)
+                        $('#room').parent().removeClass('d-none');
+                        $('#room').empty()
+                        response.forEach(function (value) {
+                            $('#room').append(`<option value="${value.id}"> ${value.name} </option>`)
+                        });
+
+                    }
+                });
+            }
+
             let timeLine = $('#timeLine');
             let timeChange
             let time_start = $('#time_start').val()
+            let weekdays = $(this).find(":selected").val()
+
+                $('#weekdays').change(function () {
+                weekdays = $(this).find(":selected").val()
+                    loadRoom(idShift,weekdays,time_start,timeChange)
+            })
+
             let numberweek = 0
             timeLine.change(function () {
+
+
                 $('#time_start').parent().removeClass('d-none');
                 $('#time_end').parent().removeClass('d-none');
+
                 if (timeLine.val() == 1) {
                     numberweek = 1209600000
                     timeChange = new Date(+new Date(time_start) + numberweek).toISOString().split('T')[0]
-                    $('#time_end').val(timeChange);
+                   $('#time_end').val(timeChange);
                 } else if (timeLine.val() == 2) {
                     numberweek = 3024000000
 
@@ -186,35 +208,25 @@
                 } else {
                     numberweek = 4233600000
                     timeChange = new Date(+new Date(time_start) + numberweek).toISOString().split('T')[0]
-                    $('#time_end').val(timeChange);
+                   $('#time_end').val(timeChange);
                 }
 
-                $.ajax({
-                    url: '{{ route('getTeachers') }}',
-                    type: 'post',
-                    data: {id: idShift},
-                    success: function (response) {
-                        console.log(response)
-                        $('#weekdays').empty()
-                        $.each(response, function (key, value) {
-                            $('#weekdays').append(`<option value="${value}"> ${key} </option>`)
-                        });
-
-                    }
-                })
+                loadRoom(idShift,weekdays,time_start,timeChange)
             });
 
 
             // 3024000000
             $('#time_start').change(function () {
-
+                time_start = $(this).val()
                 $("#time_end").val(new Date(+new Date($(this).val()) + numberweek).toISOString().split('T')[0]);
+            console.log($("#time_end").val())
+                loadRoom(idShift,weekdays,time_start,$("#time_end").val())
             })
 
-
+            let idShift=1
             $("#shift").change(function () {
-                let idShift = $(this).find(":selected").val()
-
+               idShift = $(this).find(":selected").val()
+                loadRoom(idShift,weekdays,time_start,timeChange)
                 $.ajax({
                     url: '{{ route('getWeekdays') }}',
                     type: 'post',
