@@ -20,9 +20,9 @@ class ClassSchedule extends Model
         'time_line',
         'time_start',
         'time_end',
-        'teacher_id',
         'subject_id',
         'room_id',
+        'teacher_id',
 
     ];
     public function students()

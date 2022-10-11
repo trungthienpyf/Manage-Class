@@ -8,6 +8,7 @@ use App\Models\ClassSchedule;
 use App\Models\Room;
 use App\Models\Teacher;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class ApiController extends Controller
@@ -67,8 +68,17 @@ class ApiController extends Controller
         $time_end = $request->time_end;
         $shift = $request->shift;
         $weekdays = $request->weekdays;
-        $room = Room::query()
-            ->select('id', 'name')
+        $model=Room::query();
+
+       $room= $this->exceptObject($model,$weekdays, $shift, $time_start, $time_end);
+
+        return response()->json($room);
+    }
+    public function exceptObject($model,$weekdays, $shift, $time_start, $time_end)
+    {
+
+        return $model
+
             ->whereDoesntHave('classSchedules', function ($query) use ($weekdays, $shift, $time_start, $time_end) {
                 $query
                     ->where('shift', $shift)
@@ -77,8 +87,6 @@ class ApiController extends Controller
                         $query1->where(function ($query2) use ($time_start, $time_end, $weekdays, $shift) {
                             $query2->whereDate('time_start', '<=', $time_start)
                                 ->whereDate('time_end', '>=', $time_start);
-
-
                         })
                             ->orWhere(function ($query2) use ($time_start, $time_end, $weekdays, $shift) {
                                 $query2->whereDate('time_start', '<=', $time_end)
@@ -86,20 +94,16 @@ class ApiController extends Controller
 
                             });
                     });
-
-
             })->get();
-
-        return response()->json($room);
     }
-
     public function getTeachers(Request $request)
     {
-        $teachers = Teacher::query()
-            ->whereDoesntHave('classSchedules', function ($query, $request) {
-                $query->where('shift', $request->shift);
-                $query->where('weekdays', $request->weekdays);
-            })->get();
+        $time_start = $request->time_start;
+        $time_end = $request->time_end;
+        $shift = $request->shift;
+        $weekdays = $request->weekdays;
+        $model = Teacher::query();
+        $teachers= $this->exceptObject($model,$weekdays, $shift, $time_start, $time_end);
         return response()->json($teachers);
     }
 }

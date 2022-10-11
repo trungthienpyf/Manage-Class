@@ -23,6 +23,7 @@ class CreateClassSchedulesTable extends Migration
 
             $table->tinyInteger('weekdays')->comment('WeekDaysEnums');
             $table->tinyInteger('shift')->comment('ShiftEnums');
+            $table->integer('target')->nullable();
             $table->foreignId('teacher_id')->nullable()->constrained('teachers');
             $table->foreignId('subject_id')->constrained('subjects');
 

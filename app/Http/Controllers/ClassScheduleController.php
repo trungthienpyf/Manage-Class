@@ -63,6 +63,7 @@ class ClassScheduleController extends Controller
     public function store(Request $request)
     {
         //
+
         $time_start  =$request->time_start;
         $time_end  =$request->time_end;
        $timeOfShift= ShiftClassEnum::getTimeOfShift($request->shift);

@@ -46,8 +46,8 @@
                 <th>Tên môn</th>
                 <th>Ca</th>
                 <th>Buổi học</th>
-                <th>Số lượng sinh viên</th>
-                <th>Ngày khai giảng dự kiến</th>
+                <th>Số lượng</th>
+                <th>Ngày mở lớp dự kiến</th>
                 <th>Giảng viên</th>
                 <th>Phòng</th>
                 <th>Hành động</th>
