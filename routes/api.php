@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/getSchedule', [ApiController::class,'getSchedule'])->name('getSchedule');
+Route::get('/getScheduleTeacher', [ApiController::class,'getScheduleTeacher'])->name('getScheduleTeacher');
 Route::post('/getWeekdays', [ApiController::class,'getWeekdays'])->name('getWeekdays');
 Route::post('/getTeachers', [ApiController::class,'getTeachers'])->name('getTeachers');
+
 Route::post('/getRooms', [ApiController::class,'getRooms'])->name('getRooms');

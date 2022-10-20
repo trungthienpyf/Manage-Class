@@ -59,6 +59,10 @@ class ClassSchedule extends Model
     public function getNameShiftAttribute(){
         return ShiftClassEnum::getShift($this->shift);
     }
+    public function getTimeStartExpectedAttribute(){
+
+        return date("d-m-Y", strtotime($this->time_start)) ;
+    }
     public function getStudentCountAttribute(){
         return $this->students->count();
     }

@@ -62,7 +62,7 @@
                     <td>{{$class->name_shift}}</td>
                     <td>{{$class->name_weekday}}</td>
                     <td>{{$class->student_count}}</td>
-                    <td>{{$class->start_date}}</td>
+                    <td>{{$class->time_start_expected}}</td>
 
                     <td>{{ !empty($class->teacher) ? $class->teacher->name:''}}</td>
 

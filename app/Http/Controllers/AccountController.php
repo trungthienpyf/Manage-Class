@@ -45,9 +45,14 @@ class AccountController extends Controller
             return redirect()->route('student');
         }
         if ($teacher) {
+            if($teacher->level==1){
+                Auth::login($teacher);
+                return redirect()->route('teacher');
+            }else{
+                Auth::login($teacher);
+                return redirect()->route('admin');
+            }
 
-            Auth::login($teacher);
-            return redirect()->route('admin');
 
         }
         return redirect()->back();

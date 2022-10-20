@@ -8,6 +8,7 @@ use App\Models\ClassSchedule;
 use App\Models\Room;
 use App\Models\Teacher;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
@@ -16,17 +17,36 @@ class ApiController extends Controller
     public function getSchedule()
     {
         $q = ClassSchedule::query()
-            ->select('time_start as start', 'time_end as end', 'weekdays')
+            //->select('time_start as start', 'time_end as end', 'weekdays')
+
+            ->with('subject:id,name')
             ->whereHas('students', function ($query) {
                 $query->where('id', 1);
             })
             ->where('class_schedules.id', 1)
-            ->first();
+         ->first(['time_start', 'time_end','weekdays','subject_id']);
 
-        return $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($q->weekdays), date('d-m-Y', strtotime($q->start)), date('d-m-Y', strtotime($q->end)));
+        return $q;
+        // return $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($q->weekdays), date('d-m-Y', strtotime($q->start)), date('d-m-Y', strtotime($q->end)));
     }
 
-    function weekDaysBetween($requiredDays, $start, $end)
+    public function getScheduleTeacher(Request $request)
+    {
+
+        $q = ClassSchedule::query()
+
+            ->with('subject')
+            ->with('room')
+            ->whereHas('teacher', function ($query)  {
+                $query->where('id', 2);
+            })
+            ->first(['time_start as start', 'time_end as end','weekdays','subject_id','room_id']);
+
+
+        return $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($q->weekdays), date('d-m-Y', strtotime($q->start)), date('d-m-Y', strtotime($q->end)),$q->subject->name." - ".$q->room->name);
+    }
+
+    function weekDaysBetween($requiredDays, $start, $end,$title)
     {
 
         $startTime = Carbon::createFromFormat('d-m-Y', $start);
@@ -37,9 +57,11 @@ class ApiController extends Controller
         while ($startTime->lt($endTime)) {
 
             if (in_array($startTime->dayOfWeek, $requiredDays)) {
+                $result[$i]['title'] = $title;
                 $result[$i]['start'] = Carbon::parse($startTime->copy())->toDateTimeString();
                 $result[$i]['end'] = Carbon::parse($startTime->copy()->addHours(4))->toDateTimeString();
 
+                $result[$i]['title'] = $title;
             }
 
             $startTime->addDay();
@@ -68,17 +90,17 @@ class ApiController extends Controller
         $time_end = $request->time_end;
         $shift = $request->shift;
         $weekdays = $request->weekdays;
-        $model=Room::query();
+        $model = Room::query();
 
-       $room= $this->exceptObject($model,$weekdays, $shift, $time_start, $time_end);
+        $room = $this->exceptObject($model, $weekdays, $shift, $time_start, $time_end);
 
         return response()->json($room);
     }
-    public function exceptObject($model,$weekdays, $shift, $time_start, $time_end)
+
+    public function exceptObject($model, $weekdays, $shift, $time_start, $time_end)
     {
 
         return $model
-
             ->whereDoesntHave('classSchedules', function ($query) use ($weekdays, $shift, $time_start, $time_end) {
                 $query
                     ->where('shift', $shift)
@@ -96,6 +118,7 @@ class ApiController extends Controller
                     });
             })->get();
     }
+
     public function getTeachers(Request $request)
     {
         $time_start = $request->time_start;
@@ -103,7 +126,7 @@ class ApiController extends Controller
         $shift = $request->shift;
         $weekdays = $request->weekdays;
         $model = Teacher::query();
-        $teachers= $this->exceptObject($model,$weekdays, $shift, $time_start, $time_end);
+        $teachers = $this->exceptObject($model, $weekdays, $shift, $time_start, $time_end);
         return response()->json($teachers);
     }
 }
