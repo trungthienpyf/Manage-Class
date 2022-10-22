@@ -64,7 +64,7 @@
                                             <tbody id="body{{$schedule->id}}">
                                             </tbody>
                                         </table>
-                                        <button type="submit" id="buttonAttendance"
+                                        <button type="submit" id="buttonAttendance{{$schedule->id}}"
                                                 onClick="submitForm({{$schedule->id}})"
                                                 class="btn btn-primary">Điểm danh
                                         </button>
@@ -98,9 +98,9 @@
                     $(".spinner-border").removeClass('d-flex');
                     $(".card-body" + id).removeClass('d-none');
                     if (response[1].length != 0) {
-                        $("#buttonAttendance").text("Cập nhật điểm danh");
+                        $("#buttonAttendance"+id).text("Cập nhật điểm danh");
                     } else {
-                        $("#buttonAttendance").text("Điểm danh");
+                        $("#buttonAttendance"+id).text("Điểm danh");
                     }
 
                     $('#body' + id).empty()
@@ -153,7 +153,7 @@
         }
 
         function pushID(id) {
-
+                console.log(id)
             $("#date" + id).click(function (e) {
                 e.stopPropagation()
             })
@@ -165,7 +165,7 @@
                     id: id,
                 },
                 success: function (response) {
-
+                    console.log(response)
                     let date = response[Object.keys(response)[Object.keys(response).length - 1]]
 
                     updateSchedule(date, id)
@@ -183,7 +183,7 @@
                         let exists = arrCheck.includes(value)
 
 
-                        $('#date' + id).append(`<option selected id="optionSelected${value}" value="${value}"> Buổi ${key} - ${value}
+                        $('#date' + id).append(`<option selected id="optionSelected${value+id}" value="${value}"> Buổi ${key} - ${value}
                                                     <span style="color: red"> ${exists ? "" : "Chưa điểm danh"} </span>
                         </option>`)
                     });
@@ -193,8 +193,6 @@
             });
 
         }
-
-
         function submitForm(id, event) {
             let date = $('#date' + id).val()
             $("#form" + id).submit(function (e) {
@@ -219,8 +217,8 @@
                         class_id: $(`#form${id} input[name="class_id"]`).val(),
                     },
                     success: function (response) {
-                        $("#buttonAttendance").text("Cập nhật điểm danh");
-                        let valueAttr = $("#optionSelected" + date).text();
+                        $("#buttonAttendance"+id).text("Cập nhật điểm danh");
+                        let valueAttr = $("#optionSelected" + date+id).text();
                         let str= valueAttr.split('C')
                     $(`span[title="${valueAttr}"]`).text(str[0])
                     }
