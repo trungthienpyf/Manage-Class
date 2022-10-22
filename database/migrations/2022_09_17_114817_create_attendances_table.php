@@ -17,6 +17,7 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->foreignId('classSchedule_id')->constrained('class_schedules');
             $table->foreignId('teacher_id')->constrained('teachers');
+            $table->unique(['classSchedule_id', 'teacher_id','date']);
 
             $table->timestamp('date');
             $table->timestamps();

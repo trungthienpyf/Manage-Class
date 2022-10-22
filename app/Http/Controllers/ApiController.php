@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 
 use App\Enums\WeekdaysClassEnum;
+use App\Models\Attendance;
+use App\Models\AttendanceStudent;
 use App\Models\ClassSchedule;
+use App\Models\ClassStudent;
 use App\Models\Room;
 use App\Models\Teacher;
 use Carbon\Carbon;
@@ -24,7 +27,7 @@ class ApiController extends Controller
                 $query->where('id', 1);
             })
             ->where('class_schedules.id', 1)
-         ->first(['time_start', 'time_end','weekdays','subject_id']);
+            ->first(['time_start', 'time_end', 'weekdays', 'subject_id']);
 
         return $q;
         // return $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($q->weekdays), date('d-m-Y', strtotime($q->start)), date('d-m-Y', strtotime($q->end)));
@@ -34,19 +37,54 @@ class ApiController extends Controller
     {
 
         $q = ClassSchedule::query()
-
             ->with('subject')
             ->with('room')
-            ->whereHas('teacher', function ($query)  {
+            ->whereHas('teacher', function ($query) {
                 $query->where('id', 2);
             })
-            ->first(['time_start as start', 'time_end as end','weekdays','subject_id','room_id']);
+            ->first(['time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id']);
 
 
-        return $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($q->weekdays), date('d-m-Y', strtotime($q->start)), date('d-m-Y', strtotime($q->end)),$q->subject->name." - ".$q->room->name);
+        return $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($q->weekdays), date('d-m-Y', strtotime($q->start)), date('d-m-Y', strtotime($q->end)), $q->subject->name . " - " . $q->room->name);
     }
 
-    function weekDaysBetween($requiredDays, $start, $end,$title)
+    public function getDateAttendance(Request $request)
+    {
+
+        $q = ClassSchedule::query()
+            ->with('attendances')
+            ->where('id', $request->id)
+            ->first(['time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id', 'id']);
+
+        $array = $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($q->weekdays), date('d-m-Y', strtotime($q->start)), date('d-m-Y', strtotime($q->end)));
+        $arr = [];
+        $i = 0;
+        foreach ($array as $date) {
+            if (explode(" ", $date['start'])[0] <= date('Y-m-d')) {
+                $i++;
+                $arr[$i] = explode(" ", $date['start'])[0];
+            }
+
+        }
+        $check = Attendance::query()
+
+
+            ->where('classSchedule_id', $request->id)
+            ->where(function($query) use ($arr){
+                foreach($arr as $date){
+                    $query->orWhere('date', $date);
+                }
+    })
+                ->get(['date']);
+
+
+
+
+        return [$arr, $check->all()];
+    }
+
+
+    function weekDaysBetween($requiredDays, $start, $end, $title = null)
     {
 
         $startTime = Carbon::createFromFormat('d-m-Y', $start);

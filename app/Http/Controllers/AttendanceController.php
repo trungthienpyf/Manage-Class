@@ -3,26 +3,90 @@
 namespace App\Http\Controllers;
 
 
-
-
+use App\Models\Attendance;
+use App\Models\AttendanceStudent;
+use App\Models\ClassSchedule;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
-    public function index(){
-    $students=Student::query()
-        ->with('classSchedules')
-        ->whereHas('classSchedules',function ($q){
-            $q->where('id',1);
-        })
+    public function index()
+    {
+        $schedules = ClassSchedule::query()
+            ->with('students', 'subject')
+            ->where('teacher_id', Auth()->user()->id)
+            ->get();
 
-        ->get();
-    return view('teacher.attendance',['students'=>$students]);
+
+
+        return view('teacher.attendance', [
+            'schedules' => $schedules,
+
+        ]);
+    } public function getAttendanceClass(Request $request)
+    {
+        $schedules = ClassSchedule::query()
+            ->with('students', 'subject')
+            ->where('teacher_id', Auth()->user()->id)
+            ->where('id', $request->classSchedule_id)
+            ->get();
+
+        $attendanceId = Attendance::query()
+            ->where('classSchedule_id', $request->classSchedule_id)
+            ->where('teacher_id',  Auth()->user()->id)
+            ->where('date', $request->date)
+            ->value('id');
+        $arr = [];
+        if (!empty($attendanceId)) {
+            $attendances = AttendanceStudent::query()
+                ->where('attendance_id', $attendanceId)
+                ->get(['student_id', 'status']);
+            foreach ($attendances as $attendance) {
+                $arr[$attendance->student_id] = $attendance->status;
+            }
+        }
+
+        return [
+            $schedules,
+            $arr
+        ];
     }
-    public function attendance(Request $request){
-        dd($request->all());
-       // return view('teacher.attendance',['students'=>$students]);
+
+    public function attendance(Request $request)
+    {
+
+        $statuses = $request->get('status');
+        $class_id = $request->get('class_id');
+        $date =$request->date;
+        $teacher_id = Auth()->user()->id;
+        $attendance = Attendance::query()->where([
+            'classSchedule_id' => $class_id,
+            'teacher_id' => $teacher_id,
+            'date' => $date,
+        ])->first();
+
+        if (is_null($attendance)) {
+            $attendance = Attendance::create([
+                'classSchedule_id' => $class_id,
+                'teacher_id' => $teacher_id,
+                'date' => $date,
+            ]);
+        }
+
+        foreach ($statuses as $student_id => $status) {
+            AttendanceStudent::updateOrInsert([
+                'attendance_id' => $attendance->id,
+                'student_id' => $student_id,
+
+            ],
+                [
+                    'status' => $status,
+                ]
+            );
+        }
+        return response()->json(['success' => true]);
     }
 
 }

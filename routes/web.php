@@ -43,9 +43,10 @@ Route::middleware(['auth','role:1'])->group(function () {
         return view('teacher.index');
     })->name('teacher');
     Route::name("teacher.")->prefix('teacher')->group(function () {
-        Route::get('/schedule',[ScheduleTeacherController::class, 'index'])->name('index');
-        Route::get('/attendance',[AttendanceController::class, 'index'])->name('index');
-        Route::post('/attendance',[AttendanceController::class, 'attendance'])->name('attendance');
+        Route::get('/schedule',[ScheduleTeacherController::class, 'index'])->name('schedule');
+        Route::get('/attendance',[AttendanceController::class, 'index'])->name('attendance');
+        Route::post('/getAttendanceClass',[AttendanceController::class, 'getAttendanceClass'])->name('getAttendanceClass');
+        Route::post('/attendance',[AttendanceController::class, 'attendance'])->name('attendanceStudent');
     });
 });
 

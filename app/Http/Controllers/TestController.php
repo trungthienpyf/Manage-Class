@@ -16,12 +16,9 @@ class TestController extends Controller
 
 
         $q = ClassSchedule::query()
-            //  ->select('time_start as start', 'time_end as end', 'weekdays')
-            ->with('subject')
-            ->whereHas('teacher', function ($query)  {
-                $query->where('id', 2);
-            })
-            ->first(['time_start as start', 'time_end as end','weekdays','subject_id']);
+            ->with('attendances')
+            ->where('id', 4)
+            ->first(['time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id']);
            return  $q;
            // return view('index');
 

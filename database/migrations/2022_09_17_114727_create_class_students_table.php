@@ -17,7 +17,7 @@ class CreateClassStudentsTable extends Migration
 
             $table->foreignId('classSchedule_id')->constrained('class_schedules');
             $table->foreignId('student_id')->constrained('students');
-
+            $table->primary(['classSchedule_id', 'student_id']);
             $table->tinyInteger('status')->comment('StatusClassStudentEnums')->default(0);
             $table->string('payment')->nullable();
         });

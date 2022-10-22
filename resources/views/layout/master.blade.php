@@ -48,7 +48,7 @@
                             <div class="card-body">
 
                                 <div class="row">
-                                    <!-- end col-->
+
 
                                 @yield('content')
                                     <!-- end col-->

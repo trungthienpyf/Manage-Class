@@ -16,4 +16,8 @@ class Student extends Model implements Authenticatable
     public function classSchedules() {
         return $this->belongsToMany(ClassSchedule::class, 'class_students', 'student_id', 'classSchedule_id');
     }
+    public function AttendanceStudents()
+    {
+        return $this->belongsToMany(Attendance::class, 'attendance_students', 'student_id', 'attendance_id');
+    }
 }
