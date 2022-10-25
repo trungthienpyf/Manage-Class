@@ -44,13 +44,15 @@
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     width: 1000,
                     initialView: 'timeGridWeek',
+
                     headerToolbar: {
                         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
                         center: 'title',
                         left:'today prev,next',
                         defaultView: 'timeGridWeek',
                     },
-
+                    editable: true,
+                    selectable: true,
                     events:response
                 });
 

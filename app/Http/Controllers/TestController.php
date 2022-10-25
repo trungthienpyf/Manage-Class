@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 
 use App\Enums\WeekdaysClassEnum;
+use App\Models\Attendance;
 use App\Models\ClassSchedule;
 use App\Models\Room;
 use App\Models\Teacher;
@@ -15,12 +16,38 @@ class TestController extends Controller
     public function test(){
 
 
-        $q = ClassSchedule::query()
-            ->with('attendances')
-            ->where('id', 4)
-            ->first(['time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id']);
-           return  $q;
-           // return view('index');
+        $q = Attendance::query()
+
+            ->whereHas('AttendanceStudents', function ($query) {
+                $query->where('attendance_students.student_id', 1)
+                   ->where('attendance_students.status', 1);
+
+            })
+            ->get()
+            ->map(function ($item) {
+                $arr[$item->classSchedule_id] =date("Y-m-d", strtotime($item->date));
+
+              return    $arr;
+
+            })->toArray();
+        $q2 = Attendance::query()
+
+            ->whereHas('AttendanceStudents', function ($query) {
+                $query->where('attendance_students.student_id', 1)
+                   ->where('attendance_students.status', 2);
+
+            })
+
+            ->get()
+            ->map(function ($item) {
+                $arr[$item->classSchedule_id] =date("Y-m-d", strtotime($item->date));
+                $arr['status'] =2;
+              return    $arr;
+
+            })->toArray();
+
+        return $q;
+        // return view('index');
 
     }
 }

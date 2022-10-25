@@ -34,18 +34,11 @@
         $.ajax({
             url: '{{route('getSchedule')}}',
             type: 'get',
-          {{--data: {id: '{{$id}}'},--}}
+          data: {id: '{{Auth()->guard('student')->user()->id}}'},
             success: function (response) {
                     console.log(response)
-            let test=[
-                { // this object will be "parsed" into an Event Object
-                    title: 'Hoc tieng anh', // a property!
-                    start: "2022-09-30 22:52:16", // a property!
-                    end: "2022-10-01 02:52:16" ,// a property! ** see important note below about 'end' **
 
-                }
-            ]
-              console.log(test)
+
                 var calendarEl = document.getElementById('calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     width: 1000,
@@ -56,7 +49,8 @@
                         left:'today prev,next',
                         defaultView: 'timeGridWeek',
                     },
-
+                    editable: true,
+                    selectable: true,
                     events:response
                 });
 

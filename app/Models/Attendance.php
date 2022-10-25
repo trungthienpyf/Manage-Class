@@ -15,6 +15,10 @@ class Attendance extends Model
     ];
     public function AttendanceStudents()
     {
-        return $this->belongsToMany(Student::class, 'attendance_students', 'attendance_id', 'student_id');
+        return $this->belongsToMany(Student::class, 'attendance_students', 'attendance_id', 'student_id')->withPivot('status','student_id');
+    }
+    public function classSchedule()
+    {
+        return $this->belongsTo(ClassSchedule::class,'classSchedule_id');
     }
 }
