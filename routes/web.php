@@ -57,6 +57,7 @@ Route::middleware(['auth:student'])->group(function () {
     Route::get('/student/calendar', [StudentController::class,'viewCalendar']);
     Route::get('/progress/{progress}', [StudentController::class,'progress'])->name('progress');
     Route::post('/payment', [StudentController::class,'paymentQR'])->name('payment');
+    Route::get('/resultPayment', [StudentController::class,'resultPayment'])->name('resultPayment');
 
 });
 //Route::get('/getSchedule', [ApiController::class,'getSchedule'])->name('getSchedule');
