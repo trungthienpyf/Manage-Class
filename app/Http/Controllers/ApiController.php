@@ -32,8 +32,8 @@ class ApiController extends Controller
 
        $attendance= Attendance::query()
 
-           ->whereHas('AttendanceStudents', function ($query) {
-               $query->where('attendance_students.student_id', 1)
+           ->whereHas('AttendanceStudents', function ($query) use ($request){
+               $query->where('attendance_students.student_id',  $request->id)
                    ->where('attendance_students.status', 1);
            })
            ->get()
@@ -45,8 +45,8 @@ class ApiController extends Controller
            })->toArray();
        $attendanceDropOut= Attendance::query()
 
-           ->whereHas('AttendanceStudents', function ($query) {
-               $query->where('attendance_students.student_id', 1)
+           ->whereHas('AttendanceStudents', function ($query)use ($request) {
+               $query->where('attendance_students.student_id', $request->id)
                    ->where('attendance_students.status', 2);
            })
            ->get()

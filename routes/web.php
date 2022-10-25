@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassScheduleController;
 use App\Http\Controllers\ScheduleTeacherController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -52,10 +53,10 @@ Route::middleware(['auth','role:1'])->group(function () {
 
 
 Route::middleware(['auth:student'])->group(function () {
-    Route::get('/student', function () {
-        View::share('title', 'Student');
-        return view('calendar');
-    })->name('student');
+    Route::get('/student', [StudentController::class,'index'])->name('student');
+    Route::get('/student/calendar', [StudentController::class,'viewCalendar']);
+    Route::get('/progress/{progress}', [StudentController::class,'progress'])->name('progress');
+    Route::post('/payment', [StudentController::class,'paymentQR'])->name('payment');
 
 });
 //Route::get('/getSchedule', [ApiController::class,'getSchedule'])->name('getSchedule');

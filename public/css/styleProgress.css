@@ -1,0 +1,106 @@
+@import url(https://fonts.bunny.net/css?family=darker-grotesque);
+
+:root {
+    --line-border-color: #a53860!important;
+    --disabled-line-border: #d1d2d4!important;
+    --button-active-color: #830a48!important;
+    --text-color: #868991;
+}
+
+
+
+.container {
+    text-align: center;
+}
+
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+    max-width: 100vw;
+    position: relative;
+    width: 35rem;
+}
+
+.progress-container::before {
+    background-color: #a53860!important;
+    content: "";
+    height: 0.4rem;
+    left: 0;
+    position: absolute;
+    top: 58%;
+    transform: translateY(-50%);
+    width: 100%;
+    z-index: -1;
+}
+
+.progress {
+    background-color: #a53860!important;
+    height: 0.4rem;
+    left: 0;
+    position: absolute;
+    top: 58%;
+    transform: translateY(-50%);
+    transition: 0.4s ease;
+    width: 0%;
+
+}
+.card-body{
+    min-height: 500px;
+    position: relative;
+}
+.button-field{
+
+    position: absolute;
+    bottom: 0;
+}
+
+.circle1 {
+    align-items: center;
+    background-color: #fff;
+    border: 3px solid var(--disabled-line-border);
+    border-radius: 50%;
+    color: var(--text-color);
+    display: flex;
+    height: 3rem;
+    justify-content: center;
+    transition: 0.4s ease;
+    width: 3rem;
+    z-index: 1;
+}
+
+.circle1.active1 {
+    border-color: var(--line-border-color)!important;
+}
+
+.btn:disabled {
+    background-color: var(--disabled-line-border);
+    border-radius: 0.5rem;
+    border: none;
+    color: var(--text-color);
+    cursor: not-allowed;
+
+    margin: 0 0.5rem;
+
+}
+
+.btn {
+    background-color: var(--line-border-color);
+    border-radius: 0.5rem;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+
+    margin: 0 0.5rem;
+
+    transition: background-color 0.5s, transform 0.5s;
+}
+
+.btn:active {
+    transform: scale(0.9);
+    background-color: var(--button-active-color);
+}
+
+.btn:focus {
+    outline: none;
+}

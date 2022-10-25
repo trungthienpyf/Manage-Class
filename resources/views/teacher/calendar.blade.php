@@ -17,6 +17,7 @@
 
                 <div class="row">
                     <div id='calendar' style="width: 100%">
+
                     </div>
                 </div>
 
