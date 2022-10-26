@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\ClassSchedule;
+use App\Models\ClassStudent;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller
@@ -12,6 +13,9 @@ class StudentController extends Controller
     {
         $classes = ClassSchedule::query()
             ->with('subject')
+            ->whereDoesntHave('students', function ($query) {
+                $query->where('student_id',auth()->user()->id);
+            })
             ->where('status', 0)
             ->get();
         return view('student.index', compact('classes'));
@@ -22,18 +26,39 @@ class StudentController extends Controller
         return view('student.calendar');
     }
 
-    public function progress()
+    public function progress(ClassSchedule $progress)
     {
-        return view('student.progress');
+
+        return view('student.progress', compact('progress'));
     }
+
 
     public function resultPayment(Request $request)
     {
-        dd($request->all());
-        return view('student.progress');
+        $msg = "";
+
+        $id=explode("=", $request->extraData)[1];
+
+        if ($request->resultCode == 0) {
+
+            $payment=$request->orderType;
+
+            ClassStudent::create([
+                'classSchedule_id' => $id,
+                'student_id' => auth()->user()->id,
+                'status' => 0,
+                'payment' => $payment,
+            ]);
+
+            $msg = $request->orderInfo . " - " . $request->message;
+            return view('student.thank', compact('msg'));
+        }
+        return redirect()->back();
+
+
     }
 
-    public function paymentQR()
+    public function paymentQR(Request $request)
     {
         $endpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
 
@@ -43,11 +68,12 @@ class StudentController extends Controller
         $secretKey = 'at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa';
 
         $orderInfo = "Thanh toán qua QR MoMo";
-        $amount = "10000";
+        $amount = $request->price;
         $orderId = time() . "";
         $redirectUrl = route('resultPayment');
         $ipnUrl = route('resultPayment');
-        $extraData = "";
+        $extraData = "id=".$request->id_class;
+
 
 
         $requestId = time() . "";
@@ -62,6 +88,7 @@ class StudentController extends Controller
             'requestId' => $requestId,
             'amount' => $amount,
             'orderId' => $orderId,
+
             'orderInfo' => $orderInfo,
             'redirectUrl' => $redirectUrl,
             'ipnUrl' => $ipnUrl,
@@ -73,8 +100,8 @@ class StudentController extends Controller
         $jsonResult = json_decode($result, true);  // decode json
 
 
-        return $jsonResult;
-       // return redirect($jsonResult['payUrl']);
+        // return $jsonResult;
+        return redirect($jsonResult['payUrl']);
 
     }
 

@@ -16,7 +16,11 @@ class TestController extends Controller
     public function test(){
 
 
-        $classes= ClassSchedule::query()->with('subject')->get();
+        $classes= ClassSchedule::query()->with('subject')
+            ->whereDoesntHave('students', function ($query) {
+                $query->where('student_id', 1);
+            })
+            ->get();
 
         return $classes;
         // return view('index');
