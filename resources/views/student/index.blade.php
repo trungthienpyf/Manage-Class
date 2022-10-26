@@ -35,8 +35,6 @@
                                                 <b>741</b>
                                             </span>
                     </p>
-                    <p class="text-muted font-17 mb-3">Thời gian học: {{$class->name_weekday}} - {{$class->name_shift}}</a>
-                    </p>
                     <div class=" d-flex justify-content-end">
                         <a href="{{route('progress',$class)}}">
                             <button class="btn btn-primary">Đăng ký</button>

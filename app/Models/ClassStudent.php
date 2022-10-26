@@ -10,12 +10,5 @@ class ClassStudent extends Model
 {
     use HasFactory;
     protected $primaryKey = ['classSchedule_id', 'student_id'];
-    protected $fillable=[
-        'classSchedule_id',
-        'student_id',
-        'status',
-        'payment',
-    ];
-    public $timestamps=false;
     public $incrementing = false;
 }
