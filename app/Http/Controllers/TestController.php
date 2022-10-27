@@ -16,13 +16,14 @@ class TestController extends Controller
     public function test(){
 
 
-        $classes= ClassSchedule::query()->with('subject')
-            ->whereDoesntHave('students', function ($query) {
-                $query->where('student_id', 1);
-            })
-            ->get();
+        $class=ClassSchedule::query()->find(6);
+        //if($class->students->count()>=2){
+        $date= date("Y-m-d H:i:s", strtotime($class->time_start. ' + 3 days' ));
+        $class->status=1;
+        $class->time_start=$date;
+        $class->save();
 
-        return $classes;
+        return $class->students->count();
         // return view('index');
 
     }

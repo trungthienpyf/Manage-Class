@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ClassSchedule;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -12,7 +13,7 @@ class demo extends Command
      *
      * @var string
      */
-    protected $signature = 'demo:cron';
+    protected $signature = 'demo:cron {class}';
 
     /**
      * The console command description.
@@ -38,13 +39,19 @@ class demo extends Command
      */
     public function handle()
     {
-        DB::table('students')->insert([
-            'name' => 'hello new',
-            'password' => 'hello new',
-            'phone' => 'hello new',
-            'email' => 'hello new',
-        ]);
-        $this->info('Demo:Cron Cummand Run successfully!');
+        $class_id = $this->argument('class');
+        $class=ClassSchedule::query()->find($class_id);
+        if($class->students->count()>=15){
+           $date_start= date("Y-m-d H:i:s", strtotime($class->time_start. ' + 3 days' ));
+           $date_end= date("Y-m-d H:i:s", strtotime($class->time_end. ' + 3 days' ));
+            $class->status=1;
+            $class->time_start=$date_start;
+            $class->time_end=$date_end;
+            $class->save();
+        }
+
+
+        $this->info('Demo:Cron Command Run successfully!');
 
     }
 }
