@@ -21,6 +21,16 @@ final class ShiftClassEnum extends Enum
             'Tối'=>self::ShiftThree,
         ];
     }
+    public static function getShiftEnum($value)
+    {
+        if($value == 'Sáng') {
+            return self::ShiftOne;
+        } else if($value == 'Chiều') {
+            return self::ShiftTwo;
+        } else if($value == 'Tối') {
+            return self::ShiftThree;
+        }
+    }
     public static function getShift($value)
     {
         switch ($value) {

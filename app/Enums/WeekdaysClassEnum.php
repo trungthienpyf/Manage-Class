@@ -33,7 +33,26 @@ final class WeekdaysClassEnum extends Enum
             "Thứ 3-5-7" => self::T3T5T7,
         ];
     }
-
+    public static function getValueWeekdaysEnum($value)
+    {
+        if($value=="Thứ 2-5"){
+            return self::T2T5;
+        }else if($value=="Thứ 2-6"){
+            return self::T2T6;
+        }else if($value=="Thứ 4-7"){
+            return self::T4T7;
+        }else if($value=="Thứ 3-5"){
+            return self::T3T5;
+        }else if($value=="Thứ 3-6"){
+            return self::T3T6;
+        }else if($value=="Thứ 5-7"){
+            return self::T5T7;
+        }else if($value=="Thứ 2-4-6"){
+            return self::T2T4T6;
+        }else if($value=="Thứ 3-5-7"){
+            return self::T3T5T7;
+        }
+    }
     public static function getNameEnum($value)
     {
         switch ($value) {

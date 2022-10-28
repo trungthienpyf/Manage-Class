@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Enums\ShiftClassEnum;
 use App\Enums\TimeLineEnum;
 use App\Enums\WeekdaysClassEnum;
+use App\Imports\ClassScheduleImport;
 use App\Models\ClassSchedule;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
-
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Excel as ExcelExcel;
 class ClassScheduleController extends Controller
 {
     /**
@@ -29,7 +31,14 @@ class ClassScheduleController extends Controller
 
         ]);
     }
+    public function importCsv(Request $request)
+    {
+        $import = new ClassScheduleImport;
+      Excel::import($import, $request->file('csv'));
+        dd($import->message);
 
+        return redirect()->route('admin.class.index');
+    }
     /**
      * Show the form for creating a new resource.
      *

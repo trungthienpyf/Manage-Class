@@ -36,6 +36,7 @@ Route::middleware(['auth','role:0'])->group(function () {
         Route::resources([
             'class' => ClassScheduleController::class,
         ]);
+        Route::post('/class/import', [ClassScheduleController::class, 'importCsv'])->name('importCsv');
     });
 });
 Route::middleware(['auth','role:1'])->group(function () {

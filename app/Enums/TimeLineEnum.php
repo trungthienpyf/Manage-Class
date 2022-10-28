@@ -21,4 +21,14 @@ final class TimeLineEnum extends Enum
             '7 Tuần' => self::SevenWeek,
         ];
     }
+    public static function getValueTimeLineEnum($value)
+    {
+      if($value=="2 Tuần") {
+          return self::TwoWeek;
+      }else if($value=="5 Tuần"){
+          return self::FiveWeek;}
+      else if ($value=="7 Tuần"){
+          return self::SevenWeek;
+      }
+    }
 }

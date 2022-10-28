@@ -33,7 +33,14 @@
             <div class="col-sm-6">
                 <div class="text-sm-right">
                     <button type="button" class="btn btn-success mb-2 mr-1"><i class="mdi mdi-settings"></i></button>
-                    <button type="button" class="btn btn-light mb-2 mr-1">Import</button>
+                    <form action="{{route('admin.importCsv')}}" class="d-none"  id="formCsv" method="post"  enctype="multipart/form-data">
+                        @csrf
+                        <input  id="csv" name="csv" type="file" class="d-none"  accept=".xlsx, .xls, .csv, .ods"  />
+                    </form>
+
+                        <label for="csv" class="btn btn-light mb-2 mr-1">Import</label>
+
+
                     <button type="button" class="btn btn-light mb-2">Export</button>
                 </div>
             </div>
@@ -96,7 +103,12 @@
     <script src="{{asset('js/demo.datatable-init.js')}}"></script>
 
     <!-- Datatable Init js -->
+    <script>
+        $("#csv").change(function () {
+            $("#formCsv").submit();
 
+        })
+    </script>
 
 @endpush
 
