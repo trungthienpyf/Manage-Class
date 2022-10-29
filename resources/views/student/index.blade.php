@@ -15,7 +15,8 @@
         <div class="col-md-6 col-xl-3">
             <!-- project card -->
             <div class="card d-block">
-                <div class="card-body">
+                <img class="card-img-top" src="{{asset('img/project-1.jpg')}}" alt="project image cap">
+                <div class="card-body ">
 
                     <!-- project title-->
                     <h4 class="mt-0">

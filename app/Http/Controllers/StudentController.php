@@ -6,11 +6,13 @@ namespace App\Http\Controllers;
 use App\Models\ClassSchedule;
 use App\Models\ClassStudent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class StudentController extends Controller
 {
     public function index()
     {
+        View::share('title', 'Chương trình học');
         $classes = ClassSchedule::query()
             ->with('subject')
             ->whereDoesntHave('students', function ($query) {
@@ -28,7 +30,7 @@ class StudentController extends Controller
 
     public function progress(ClassSchedule $progress)
     {
-
+        View::share('title', 'Đăng ký');
         return view('student.progress', compact('progress'));
     }
 

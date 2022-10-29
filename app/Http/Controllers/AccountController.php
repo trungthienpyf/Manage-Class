@@ -32,6 +32,7 @@ class AccountController extends Controller
     public function login(Request $request)
     {
         $student = Student::where('id', $request->email)
+            ->orWhere('email', $request->email)
             ->where('password', $request->password)
             ->first();
         $teacher = Teacher::where('id', $request->email)

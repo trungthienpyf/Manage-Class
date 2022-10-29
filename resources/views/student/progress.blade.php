@@ -88,10 +88,11 @@
 
                         </div>
                     </div>
-                    <button class="btn btn-primary" type="submit">Thanh toán</button>
+
                 </div>
                 <div class="col-6">
                     <div class="card d-block">
+                        <img class="card-img-top" src="{{asset('img/project-1.jpg')}}" alt="project image cap">
                         <div class="card-body">
                             <!-- project title-->
                             <h4 class="mt-0">
@@ -116,7 +117,7 @@
 
                     </div> <!-- end card-->
                 </div>
-
+                <button class="btn btn-primary" type="submit">Thanh toán</button>
             </div>
 
         </form>
