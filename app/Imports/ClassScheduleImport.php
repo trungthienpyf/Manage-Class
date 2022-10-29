@@ -51,12 +51,32 @@ class ClassScheduleImport implements ToArray, WithHeadingRow
                 ->where('time_line',TimeLineEnum::getValueTimeLineEnum($time_line))
                 ->first();
             if($classSchedule==null){
-                throw new \Exception("Không tìm thấy lớp học");
+                $time_start= date("Y-m-d", strtotime(" +3 week"));
+
+                    $time_end= date("Y-m-d", strtotime($time_start." +2 week"));
+              if(TimeLineEnum::getTimeWeekEnum($time_line)==5) {
+                    $time_end = date("Y-m-d", strtotime($time_start . " +5 week"));
+                }else if(TimeLineEnum::getTimeWeekEnum($time_line)==7) {
+                    $time_end = date("Y-m-d", strtotime($time_start . " +7 week"));
+                }
+
+
+                $timeOfShift= ShiftClassEnum::getTimeOfShiftReturn($shift);
+
+                $classSchedule= ClassSchedule::create([
+                    'shift'=>ShiftClassEnum::getShiftEnum($shift),
+                    'weekdays'=>WeekdaysClassEnum::getValueWeekdaysEnum($weekdays),
+                    'time_line'=>TimeLineEnum::getValueTimeLineEnum($time_line),
+                    'time_start' => $time_start ." ".$timeOfShift[0],
+                    'time_end' => $time_end ." ".$timeOfShift[0],
+                    'subject_id'=>$subject->id,
+                ]);
+
             }
             $classSchedule->students()->attach($student->id);
             }
         }catch(\Exception $e){
-               $this->message= $e->getMessage();
+             $this->message=$e->getMessage();
         }
 
     }

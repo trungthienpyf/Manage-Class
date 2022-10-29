@@ -194,18 +194,19 @@ class ApiController extends Controller
 
     public function exceptObject($model, $weekdays, $shift, $time_start, $time_end)
     {
-
+        $weekdaysEnums= WeekdaysClassEnum::getArrayExcept($weekdays);
         return $model
-            ->whereDoesntHave('classSchedules', function ($query) use ($weekdays, $shift, $time_start, $time_end) {
+            ->whereDoesntHave('classSchedules', function ($query) use ($weekdays, $shift, $time_start, $time_end, $weekdaysEnums) {
                 $query
                     ->where('shift', $shift)
-                    ->where('weekdays', $weekdays)
-                    ->where(function ($query1) use ($time_start, $time_end, $weekdays, $shift) {
-                        $query1->where(function ($query2) use ($time_start, $time_end, $weekdays, $shift) {
+                    ->whereIn('weekdays', $weekdaysEnums)
+
+                    ->where(function ($query1) use ($time_start, $time_end) {
+                        $query1->where(function ($query2) use ($time_start, $time_end) {
                             $query2->whereDate('time_start', '<=', $time_start)
                                 ->whereDate('time_end', '>=', $time_start);
                         })
-                            ->orWhere(function ($query2) use ($time_start, $time_end, $weekdays, $shift) {
+                            ->orWhere(function ($query2) use ($time_start, $time_end) {
                                 $query2->whereDate('time_start', '<=', $time_end)
                                     ->whereDate('time_end', '>=', $time_end);
 
@@ -223,5 +224,15 @@ class ApiController extends Controller
         $model = Teacher::query();
         $teachers = $this->exceptObject($model, $weekdays, $shift, $time_start, $time_end);
         return response()->json($teachers);
+    }
+    public function updateTeacher(Request $request)
+    {
+        $class_id = $request->class_id;
+        $teacher_id = $request->teacher_id;
+
+      ClassSchedule::query()
+        ->where('id', $class_id)->update(['teacher_id' => $teacher_id]);
+
+        return response()->json(['status'=>200]);
     }
 }

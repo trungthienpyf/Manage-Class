@@ -236,8 +236,6 @@
                     $('#teachers').empty()
                     $('#count_teachers').empty()
                 }else{
-
-
                 $('#time_start').parent().removeClass('d-none');
                 $('#time_end').parent().removeClass('d-none');
 

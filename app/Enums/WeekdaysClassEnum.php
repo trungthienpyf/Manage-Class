@@ -20,6 +20,27 @@ final class WeekdaysClassEnum extends Enum
     const T2T4T6 = 7;
     const T3T5T7 = 8;
 
+    public function getArrayExcept($value)
+    {
+        if ($value == 1) {
+            return [1, 2, 4, 6];
+        } else if ($value == 2) {
+            return [1, 2, 5];
+        } else if ($value == 3) {
+            return [3, 6];
+        } else if ($value == 4) {
+            return [1, 4, 5, 6];
+        } else if ($value == 5) {
+            return [2, 4, 5];
+        } else if ($value == 6) {
+            return [1, 3, 4, 6];
+        } else if ($value == 7) {
+            return [7];
+        } else if ($value == 8) {
+            return [8];
+        }
+    }
+
     public function getViewArray()
     {
         return [
@@ -33,26 +54,28 @@ final class WeekdaysClassEnum extends Enum
             "Thứ 3-5-7" => self::T3T5T7,
         ];
     }
+
     public static function getValueWeekdaysEnum($value)
     {
-        if($value=="Thứ 2-5"){
+        if ($value == "Thứ 2-5") {
             return self::T2T5;
-        }else if($value=="Thứ 2-6"){
+        } else if ($value == "Thứ 2-6") {
             return self::T2T6;
-        }else if($value=="Thứ 4-7"){
+        } else if ($value == "Thứ 4-7") {
             return self::T4T7;
-        }else if($value=="Thứ 3-5"){
+        } else if ($value == "Thứ 3-5") {
             return self::T3T5;
-        }else if($value=="Thứ 3-6"){
+        } else if ($value == "Thứ 3-6") {
             return self::T3T6;
-        }else if($value=="Thứ 5-7"){
+        } else if ($value == "Thứ 5-7") {
             return self::T5T7;
-        }else if($value=="Thứ 2-4-6"){
+        } else if ($value == "Thứ 2-4-6") {
             return self::T2T4T6;
-        }else if($value=="Thứ 3-5-7"){
+        } else if ($value == "Thứ 3-5-7") {
             return self::T3T5T7;
         }
     }
+
     public static function getNameEnum($value)
     {
         switch ($value) {

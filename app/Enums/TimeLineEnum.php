@@ -23,12 +23,23 @@ final class TimeLineEnum extends Enum
     }
     public static function getValueTimeLineEnum($value)
     {
-      if($value=="2 Tuần") {
-          return self::TwoWeek;
-      }else if($value=="5 Tuần"){
-          return self::FiveWeek;}
-      else if ($value=="7 Tuần"){
-          return self::SevenWeek;
-      }
+        if ($value == "2 Tuần") {
+            return self::TwoWeek;
+        } else if ($value == "5 Tuần") {
+            return self::FiveWeek;
+        } else if ($value == "7 Tuần") {
+            return self::SevenWeek;
+        }
+
+    }
+    public static function getTimeWeekEnum($value)
+    {
+        if($value == "2 Tuần") {
+            return 2;
+        }else if($value == "5 Tuần"){
+            return 5;}
+        else if ($value == "7 Tuần"){
+            return 7;
+        }
     }
 }
