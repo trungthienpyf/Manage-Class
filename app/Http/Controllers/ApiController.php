@@ -22,9 +22,8 @@ class ApiController extends Controller
     {
 
         $q = ClassSchedule::query()
-
-
-            ->with('subject:id,name')
+            ->with('subject:id,name as title')
+            ->with('room')
             ->whereHas('students', function ($query) use ($request) {
                 $query->where('id', $request->id);
             })
@@ -58,16 +57,25 @@ class ApiController extends Controller
            })->toArray();
 
         $arr = [];
-        foreach ($q as $item) {
-          $schedule=  $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($item->weekdays),
-                date('d-m-Y', strtotime($item->start)), date('d-m-Y', strtotime($item->end)),
-              $item->subject->name . " - " . $item->room->name,
-              $item->id,
-              $attendance,
-              $attendanceDropOut
-          );
-            $arr = array_merge($arr, $schedule);
+        try{
+            foreach ($q as $item) {
+                $nameSubject = $item->subject->title;
+                $nameRoom= $item->room->name;
+
+
+                $schedule=  $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($item->weekdays),
+                    date('d-m-Y', strtotime($item->start)), date('d-m-Y', strtotime($item->end)),
+                    $nameSubject ." - ".$nameRoom,
+                    $item->id,
+                    $attendance,
+                    $attendanceDropOut
+                );
+                $arr = array_merge($arr, $schedule);
+            }
+        }catch (\Exception $e){
+
         }
+
 
         return $arr;
     }
@@ -126,7 +134,7 @@ class ApiController extends Controller
     }
 
 
-    function weekDaysBetween($requiredDays, $start, $end, $title = null,$id=null, $arr=null,$arr2=null)
+    function weekDaysBetween($requiredDays, $start, $end, $title = '',$id=null, $arr=null,$arr2=null)
     {
 
         $startTime = Carbon::createFromFormat('d-m-Y', $start);
