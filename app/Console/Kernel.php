@@ -2,10 +2,13 @@
 
 namespace App\Console;
 
+use App\Mail\NotificationChangeDateClass;
 use App\Models\ClassSchedule;
+use App\Models\Student;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Mail;
 
 class Kernel extends ConsoleKernel
 {
@@ -23,6 +26,17 @@ class Kernel extends ConsoleKernel
          $month= date('M', strtotime($class->time_start ));
          $day=   date('d', strtotime($class->time_start.' - 3 days'));
             $schedule->command('demo:cron '.$class->id)->yearlyOn($month,$day,'00:01');
+         $students=   Student::query()->whereHas('classSchedules', function ($query) {
+                $query->where('class_schedules.id', 1);
+            })->get();
+         $subject=$class->subject->name;
+        foreach($students as $student){
+            $details=[
+                'name'=>$class->name,
+            ];
+            Mail::to($student->email)->send(new NotificationChangeDateClass($details));
+        }
+
         }
 
     }

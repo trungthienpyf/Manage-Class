@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 
+use App\Enums\ShiftClassEnum;
+use App\Mail\RegisterClass;
 use App\Models\ClassSchedule;
 use App\Models\ClassStudent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\View;
 
 class StudentController extends Controller
@@ -41,7 +44,15 @@ class StudentController extends Controller
 
         $id=explode("=", $request->extraData)[1];
 
+
         if ($request->resultCode == 0) {
+
+            $checkClass= ClassStudent::query()->where('classSchedule_id',$id)->where('student_id',auth()->user()->id)->first();
+
+            if($checkClass){
+                $msg = "Cảm ơn bạn đã đăng ký lớp học";
+                return view('student.thank', compact('msg'));
+            }
 
             $payment=$request->orderType;
 
@@ -51,6 +62,25 @@ class StudentController extends Controller
                 'status' => 0,
                 'payment' => $payment,
             ]);
+            if(auth()->user()->email){
+
+               $classQuery= ClassSchedule::query()->where('id',$id)
+
+                    ->with('subject')
+                    ->first(['id','time_start','shift','subject_id']);
+              $shift= ShiftClassEnum::getShift($classQuery->shift);
+                $details = [
+                    'name'=>$classQuery->subject->name,
+                    'shift'=> $shift,
+                    'time_start' =>  date("d-m-Y", strtotime($classQuery->time_start)),
+                    'price' => $classQuery->subject->price,
+
+                ];
+
+                Mail::to(auth()->user()->email)->send(new RegisterClass($details));
+            }
+
+
 
             $msg = $request->orderInfo . " - " . $request->message;
             return view('student.thank', compact('msg'));
