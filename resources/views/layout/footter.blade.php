@@ -2,13 +2,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                2018 - 2020 © Thienity
+                2018 - 2020 ©  {{config('app.name')}}
             </div>
             <div class="col-md-6">
                 <div class="text-md-right footer-links d-none d-md-block">
-                    <a href="javascript: void(0);">About</a>
-                    <a href="javascript: void(0);">Support</a>
-                    <a href="javascript: void(0);">Contact Us</a>
+                    <a href="javascript: void(0);">Về chúng tôi</a>
+                    <a href="javascript: void(0);">Hỗ trợ</a>
+                    <a href="javascript: void(0);">Liên hệ chúng tôi</a>
                 </div>
             </div>
         </div>

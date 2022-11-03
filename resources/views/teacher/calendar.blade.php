@@ -4,7 +4,7 @@
 @endpush
 
 @section('breadcrum')
-    {{ Breadcrumbs::render('calendar') }}
+    {{ Breadcrumbs::render('calendarTeacher') }}
 @endsection
 
 

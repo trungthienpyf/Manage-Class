@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Log In | Hyper - Responsive Bootstrap 4 Admin Dashboard</title>
+    <title>Log In | {{config('app.name')}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description">
     <meta content="Coderthemes" name="author">
@@ -98,12 +98,12 @@
     <!-- Auth fluid right content -->
     <div class="auth-fluid-right text-center">
         <div class="auth-user-testimonial">
-            <h2 class="mb-3">I love the color!</h2>
-            <p class="lead"><i class="mdi mdi-format-quote-open"></i> It's a elegent templete. I love it very much! . <i
+            <h2 class="mb-3">{{config('app.name')}}</h2>
+            <p class="lead"><i class="mdi mdi-format-quote-open"></i> Học tập là con đường dẫn đến thành công. <i
                     class="mdi mdi-format-quote-close"></i>
             </p>
             <p>
-                - Hyper Admin User
+                {{config('app.name')}}
             </p>
         </div> <!-- end auth-user-testimonial-->
     </div>

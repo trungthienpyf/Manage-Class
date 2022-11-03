@@ -2,7 +2,7 @@
 <!-- start page title -->
 
 @section('breadcrum')
-    {{ Breadcrumbs::render('home') }}
+    {{ Breadcrumbs::render('thank') }}
 @endsection
 <!-- end page title -->
 
@@ -12,8 +12,17 @@
 @section('content')
 
     <div class="col-12">
-      {{$msg}}
 
+        <div class="text-center">
+            <h3 href="">
+                    {{$msg}}
+                </h3>
+        </div>
+        <div class="text-center">
+            <a href="{{route('classStudent')}}"><button class="btn btn-primary">
+                    Xem lớp học của bạn
+                </button></a>
+        </div>
     </div>
 
 @endsection

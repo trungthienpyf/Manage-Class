@@ -2,7 +2,7 @@
 <!-- start page title -->
 
 @section('breadcrum')
-    {{ Breadcrumbs::render('home') }}
+    {{ Breadcrumbs::render('attendance') }}
 @endsection
 <!-- end page title -->
 
@@ -82,6 +82,7 @@
 @endsection
 @push('js')
     <script>
+
         function updateSchedule(date, id) {
 
             $.ajax({
@@ -217,6 +218,12 @@
                         class_id: $(`#form${id} input[name="class_id"]`).val(),
                     },
                     success: function (response) {
+                        $.toast({
+                            heading: 'Success',
+                            text: 'Điểm danh thành công',
+                            icon: 'success',
+                            position: 'top-right',
+                        })
                         $("#buttonAttendance"+id).text("Cập nhật điểm danh");
                         let valueAttr = $("#optionSelected" + date+id).text();
                         let str= valueAttr.split('C')

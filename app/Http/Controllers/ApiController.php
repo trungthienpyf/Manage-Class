@@ -27,58 +27,57 @@ class ApiController extends Controller
             ->whereHas('students', function ($query) use ($request) {
                 $query->where('id', $request->id);
             })
-            ->get(['id','time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id']);
+            ->get(['id', 'time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id']);
 
-       $attendance= Attendance::query()
+        $attendance = Attendance::query()
+            ->whereHas('AttendanceStudents', function ($query) use ($request) {
+                $query->where('attendance_students.student_id', $request->id)
+                    ->where('attendance_students.status', 1);
+            })
+            ->get()
+            ->map(function ($item) {
+                $arr[$item->classSchedule_id] = date("Y-m-d", strtotime($item->date));
 
-           ->whereHas('AttendanceStudents', function ($query) use ($request){
-               $query->where('attendance_students.student_id',  $request->id)
-                   ->where('attendance_students.status', 1);
-           })
-           ->get()
-           ->map(function ($item) {
-               $arr[$item->classSchedule_id] =date("Y-m-d", strtotime($item->date));
+                return $arr;
 
-               return    $arr;
+            })->toArray();
+        $attendanceDropOut = Attendance::query()
+            ->whereHas('AttendanceStudents', function ($query) use ($request) {
+                $query->where('attendance_students.student_id', $request->id)
+                    ->where('attendance_students.status', 2);
+            })
+            ->get()
+            ->map(function ($item) {
+                $arr[$item->classSchedule_id] = date("Y-m-d", strtotime($item->date));
 
-           })->toArray();
-       $attendanceDropOut= Attendance::query()
+                return $arr;
 
-           ->whereHas('AttendanceStudents', function ($query)use ($request) {
-               $query->where('attendance_students.student_id', $request->id)
-                   ->where('attendance_students.status', 2);
-           })
-           ->get()
-           ->map(function ($item) {
-               $arr[$item->classSchedule_id] =date("Y-m-d", strtotime($item->date));
-
-               return    $arr;
-
-           })->toArray();
+            })->toArray();
 
         $arr = [];
-        try{
+        try {
             foreach ($q as $item) {
                 $nameSubject = $item->subject->title;
-                $nameRoom= $item->room->name;
+                $nameRoom = $item->room->name;
 
 
-                $schedule=  $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($item->weekdays),
+                $schedule = $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($item->weekdays),
                     date('d-m-Y', strtotime($item->start)), date('d-m-Y', strtotime($item->end)),
-                    $nameSubject ." - ".$nameRoom,
+                    $nameSubject . " - " . $nameRoom,
                     $item->id,
                     $attendance,
                     $attendanceDropOut
                 );
                 $arr = array_merge($arr, $schedule);
             }
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
 
         }
 
 
         return $arr;
     }
+
     public function getScheduleTeacher(Request $request)
     {
 
@@ -91,7 +90,7 @@ class ApiController extends Controller
             ->get(['time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id']);
         $arr = [];
         foreach ($q as $item) {
-            $schedule=  $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($item->weekdays),
+            $schedule = $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($item->weekdays),
                 date('d-m-Y', strtotime($item->start)), date('d-m-Y', strtotime($item->end)), $item->subject->name . " - " . $item->room->name);
             $arr = array_merge($arr, $schedule);
         }
@@ -133,8 +132,47 @@ class ApiController extends Controller
         return [$arr, $check->all()];
     }
 
+    function getNextweekDays($requiredDays, $start, $end, $shift)
+    {
+        $startTime = Carbon::createFromFormat('d-m-Y', $start);
+        $endTime = Carbon::createFromFormat('d-m-Y', $end);
+        $result = [];
+        $i = 0;
 
-    function weekDaysBetween($requiredDays, $start, $end, $title = '',$id=null, $arr=null,$arr2=null)
+        while ($startTime->lt($endTime)) {
+
+            if (in_array($startTime->dayOfWeek, $requiredDays)) {
+
+                if (strtotime(date("Y-m-d H:i:s")) < strtotime(Carbon::parse($startTime->copy())->toDateTimeString())) {
+                    $result[] = Carbon::parse($startTime->copy())->toDateTimeString();
+                }
+
+            }
+            $startTime->addDay();
+            $i++;
+        }
+        $interval=[];
+        foreach ($result as $day) {
+
+          $value=abs(strtotime(date("Y-m-d H:i:s")) - strtotime($day));
+            $interval[] = $value;
+        }
+
+        if(empty($interval)){
+            return "";
+        }
+            asort($interval);
+            $closest = key($interval);
+
+
+
+
+        $date = date('d-m-Y', strtotime($result[$closest]));
+
+        return  "Buổi " . $shift . " - Thứ " . date('w', strtotime($result[$closest])) . " Ngày " .$date ;
+    }
+
+    function weekDaysBetween($requiredDays, $start, $end, $title = '', $id = null, $arr = null, $arr2 = null)
     {
 
         $startTime = Carbon::createFromFormat('d-m-Y', $start);
@@ -151,19 +189,19 @@ class ApiController extends Controller
                 $result[$i]['start'] = Carbon::parse($startTime->copy())->toDateTimeString();
                 $result[$i]['end'] = Carbon::parse($startTime->copy()->addHours(4))->toDateTimeString();
                 $result[$i]['id'] = $id;
-                if(!is_null($arr)){
-                    $check=  date("Y-m-d", strtotime($result[$i]['start']));
-                    $keys = array_column($arr,  $result[$i]['id'] ."" );
+                if (!is_null($arr)) {
+                    $check = date("Y-m-d", strtotime($result[$i]['start']));
+                    $keys = array_column($arr, $result[$i]['id'] . "");
                     $index = array_search($check, $keys);
-                    if ($index !== false ) {
+                    if ($index !== false) {
                         $result[$i]['color'] = 'green';
                     }
                 }
-                if(!is_null($arr2)){
-                    $check=  date("Y-m-d", strtotime($result[$i]['start']));
-                    $keys = array_column($arr2,  $result[$i]['id'] ."" );
+                if (!is_null($arr2)) {
+                    $check = date("Y-m-d", strtotime($result[$i]['start']));
+                    $keys = array_column($arr2, $result[$i]['id'] . "");
                     $index = array_search($check, $keys);
-                    if ($index !== false ) {
+                    if ($index !== false) {
                         $result[$i]['color'] = 'red';
                     }
                 }
@@ -186,6 +224,7 @@ class ApiController extends Controller
 
         return response()->json($weekdays);
     }
+
     //fix ngay hoc trung
     public function getRooms(Request $request)
     {
@@ -202,13 +241,12 @@ class ApiController extends Controller
 
     public function exceptObject($model, $weekdays, $shift, $time_start, $time_end)
     {
-        $weekdaysEnums= WeekdaysClassEnum::getArrayExcept($weekdays);
+        $weekdaysEnums = WeekdaysClassEnum::getArrayExcept($weekdays);
         return $model
             ->whereDoesntHave('classSchedules', function ($query) use ($weekdays, $shift, $time_start, $time_end, $weekdaysEnums) {
                 $query
                     ->where('shift', $shift)
                     ->whereIn('weekdays', $weekdaysEnums)
-
                     ->where(function ($query1) use ($time_start, $time_end) {
                         $query1->where(function ($query2) use ($time_start, $time_end) {
                             $query2->whereDate('time_start', '<=', $time_start)
@@ -222,6 +260,7 @@ class ApiController extends Controller
                     });
             })->get();
     }
+
     //fix ngay hoc trung
     public function getTeachers(Request $request)
     {
@@ -233,14 +272,15 @@ class ApiController extends Controller
         $teachers = $this->exceptObject($model, $weekdays, $shift, $time_start, $time_end);
         return response()->json($teachers);
     }
+
     public function updateTeacher(Request $request)
     {
         $class_id = $request->class_id;
         $teacher_id = $request->teacher_id;
 
-      ClassSchedule::query()
-        ->where('id', $class_id)->update(['teacher_id' => $teacher_id]);
+        ClassSchedule::query()
+            ->where('id', $class_id)->update(['teacher_id' => $teacher_id]);
 
-        return response()->json(['status'=>200]);
+        return response()->json(['status' => 200]);
     }
 }

@@ -27,17 +27,18 @@
                     </p>
                     <!-- project detail-->
                     <p class="mb-1">
-                        Học phí:   <span class="pr-2 text-nowrap mb-2 d-inline-block">
-                                                <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
-                                                <b>21</b>
+                        Học phí: <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                                                <i class="mdi mdi-cash-plus text-muted"></i>
+                                                <b>{{number_format($class->subject->price, 0, '', ',') }}VNĐ</b>
                                             </span>
                         <span class="text-nowrap mb-2 d-inline-block">
-                                             Thời lượng học:   <i class="mdi mdi-comment-multiple-outline text-muted"></i>
-                                                <b>741</b>
+                                             Thời lượng học:   <i class="mdi mdi-clock-check-outline text-muted"></i>
+                                                <b>{{  \App\Enums\TimeLineEnum::getTimeWeekEnum($class->time_line)}} Tuần</b>
+                                            </span><span class="text-nowrap mb-2 d-inline-block">
+                                             Thời gian học:  <b>  {{$class->name_weekday}} - Buổi {{$class->name_shift}}</b>
                                             </span>
                     </p>
-                    <p class="text-muted font-17 mb-3">Thời gian học: {{$class->name_weekday}} - {{$class->name_shift}}</a>
-                    </p>
+
                     <div class=" d-flex justify-content-end">
                         <a href="{{route('progress',$class)}}">
                             <button class="btn btn-primary">Đăng ký</button>

@@ -2,7 +2,7 @@
 <!-- start page title -->
 
 @section('breadcrum')
-    {{ Breadcrumbs::render('home') }}
+    {{ Breadcrumbs::render('classCreate') }}
 @endsection
 <!-- end page title -->
 

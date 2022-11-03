@@ -25,14 +25,18 @@ class Kernel extends ConsoleKernel
         foreach( $classes as $class){
          $month= date('M', strtotime($class->time_start ));
          $day=   date('d', strtotime($class->time_start.' - 3 days'));
-            $schedule->command('demo:cron '.$class->id)->yearlyOn($month,$day,'00:01');
-         $students=   Student::query()->whereHas('classSchedules', function ($query) {
-                $query->where('class_schedules.id', 1);
+            $schedule->command('demo:cron'.$class->id)->yearlyOn($month,$day,'00:01');
+         $students=   Student::query()->whereHas('classSchedules', function ($query) use($class) {
+                $query->where('class_schedules.id', $class->id);
             })->get();
          $subject=$class->subject->name;
+         $date_old=date('d-m-Y', strtotime($class->time_start));
+         $date_new=date('d-m-Y', strtotime($class->time_start . ' + 7 days'));
         foreach($students as $student){
             $details=[
-                'name'=>$class->name,
+                'name'=>$subject,
+                'old_time_start'=>$date_old,
+                'time_start'=>$date_new,
             ];
             Mail::to($student->email)->send(new NotificationChangeDateClass($details));
         }

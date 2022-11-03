@@ -22,25 +22,13 @@ class TestController extends Controller
     public function test()
     {
 
-//        $q = ClassSchedule::query()
-//            ->with('subject')
-//            ->with('room')
-//            ->whereHas('teacher', function ($query)  {
-//                $query->where('id',1);
-//            })
-//            ->get(['time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id']);
         $q = ClassSchedule::query()
-
-
-            ->with('subject:id,name as title')
+            ->with('subject')
             ->with('room')
-            ->whereHas('students', function ($query)  {
-                $query->where('id', 1);
+            ->whereHas('teacher', function ($query) {
+                $query->where('id', 2);
             })
             ->get(['id','time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id']);
-        foreach ($q as $item) {
-           dd($item->subject->title,$item->room->name);
-        }
         return $q;
     }
 }

@@ -6,6 +6,7 @@ use App\Enums\ShiftClassEnum;
 use App\Enums\TimeLineEnum;
 use App\Enums\WeekdaysClassEnum;
 use App\Models\ClassSchedule;
+use App\Models\ClassStudent;
 use App\Models\Student;
 use App\Models\Subject;
 use Maatwebsite\Excel\Concerns\ToArray;
@@ -34,12 +35,16 @@ class ClassScheduleImport implements ToArray, WithHeadingRow
             $shift = $each["ca"];
             $weekdays = $each["ngay_hoc"];
             $time_line = $each["tuan_hoc"];
-            $student= Student::create([
-                'name' => $name,
-                'email' => $email,
-                'phone' => $phone,
-                'password' => $password,
-            ]);
+            $student=Student::query()->where('email',$email)->first();
+            if(!$student){
+                $student= Student::create([
+                    'name' => $name,
+                    'email' => $email,
+                    'phone' => $phone,
+                    'password' => $password,
+                ]);
+            }
+
             $subject= Subject::query()->where('name',$subjectName)->first();
             if($subject==null){
                 throw new \Exception("Không tìm thấy môn học");
@@ -50,6 +55,12 @@ class ClassScheduleImport implements ToArray, WithHeadingRow
                 ->where('weekdays',WeekdaysClassEnum::getValueWeekdaysEnum($weekdays))
                 ->where('time_line',TimeLineEnum::getValueTimeLineEnum($time_line))
                 ->first();
+            $checkExist=ClassStudent::query()->where('classSchedule_id',$classSchedule->id)
+                ->where('student_id',$student->id)
+                ->first();
+            if($checkExist){
+                throw new \Exception("Học viên đã tồn tại trong lớp cần học");
+            }
             if($classSchedule==null){
                 $time_start= date("Y-m-d", strtotime(" +3 week"));
 

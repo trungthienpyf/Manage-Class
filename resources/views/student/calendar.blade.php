@@ -4,7 +4,7 @@
 @endpush
 
 @section('breadcrum')
-    {{ Breadcrumbs::render('calendar') }}
+    {{ Breadcrumbs::render('calendarStudent') }}
 @endsection
 
 
@@ -32,6 +32,29 @@
             width: 100%;
             height: 100%;
 
+        }
+        .colorFill3 {
+
+            position: absolute;
+            top:20px;
+            left: 1000px;
+            display: flex;
+            width: 100%;
+            height: 100%;
+
+        }
+        .colorBlue {
+            margin-top: 5px;
+            margin-right: 15px;
+            background-color: #3788d8;
+
+            height: 12px;
+            width: 12px;
+            left: 0px;
+            top: 0px;
+            border-width: 0px;
+
+            border-radius: 12px;
         }
         .colorRed {
             margin-top: 5px;
@@ -65,6 +88,11 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
+                    <div class="colorFill3">
+                        <span class="colorBlue">
+                        </span>
+                        <span> Lịch</span>
+                    </div>
                     <div class="colorFill">
                         <span class="colorRed">
                         </span>

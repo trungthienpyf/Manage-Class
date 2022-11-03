@@ -35,9 +35,9 @@ class ClassScheduleController extends Controller
     {
         $import = new ClassScheduleImport;
       Excel::import($import, $request->file('csv'));
-        dd($import->message);
+    $message=  $import->message;
 
-        return redirect()->route('admin.class.index');
+        return redirect()->route('admin.class.index')->with('message', $message);
     }
     /**
      * Show the form for creating a new resource.

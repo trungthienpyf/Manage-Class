@@ -42,8 +42,8 @@ class demo extends Command
         $class_id = $this->argument('class');
         $class=ClassSchedule::query()->find($class_id);
         if($class->students->count()>=15){
-           $date_start= date("Y-m-d H:i:s", strtotime($class->time_start. ' + 3 days' ));
-           $date_end= date("Y-m-d H:i:s", strtotime($class->time_end. ' + 3 days' ));
+           $date_start= date("Y-m-d H:i:s", strtotime($class->time_start. ' + 7 days' ));
+           $date_end= date("Y-m-d H:i:s", strtotime($class->time_end. ' + 7 days' ));
             $class->status=1;
             $class->time_start=$date_start;
             $class->time_end=$date_end;

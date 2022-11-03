@@ -28,6 +28,7 @@ class StudentController extends Controller
 
     public function viewCalendar()
     {
+        View()->share('title', 'Lịch học');
         return view('student.calendar');
     }
 
@@ -40,6 +41,7 @@ class StudentController extends Controller
 
     public function resultPayment(Request $request)
     {
+        View()->share('title', 'Cảm ơn');
         $msg = "";
 
         $id=explode("=", $request->extraData)[1];
@@ -50,7 +52,7 @@ class StudentController extends Controller
             $checkClass= ClassStudent::query()->where('classSchedule_id',$id)->where('student_id',auth()->user()->id)->first();
 
             if($checkClass){
-                $msg = "Cảm ơn bạn đã đăng ký lớp học";
+                $msg = "Thanh toán qua QR MoMo - Giao dịch thành công.";
                 return view('student.thank', compact('msg'));
             }
 

@@ -25,9 +25,35 @@ class ClassSchedule extends Model
         'teacher_id',
 
     ];
+    public function countStatus($items)
+    {
+        $num=0;
+        $num2=0;
+        $num3=0;
+        foreach ($items as $item) {
+            foreach($item->AttendanceStudents as $attendance){
+                if($attendance->pivot->status==1){
+                    $num++;
+                }
+                if($attendance->pivot->status==2){
+                    $num2++;
+                }
+                if($attendance->pivot->status==2){
+                    $num3++;
+                }
+
+            }
+
+//            if($item->status == 1){
+//                $num+= ->count();
+//            }
+        }
+        return "Đã học: ".$num . " Vắng: ".$num2." Vắng phép: ".$num3;
+    }
+
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'class_students', 'classSchedule_id', 'student_id');
+        return $this->belongsToMany(Student::class, 'class_students', 'classSchedule_id', 'student_id')->withPivot('status');
     }
     public function attendances()
     {

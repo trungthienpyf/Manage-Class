@@ -9,6 +9,7 @@ use App\Models\ClassSchedule;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 
 class AttendanceController extends Controller
 {
@@ -20,7 +21,7 @@ class AttendanceController extends Controller
             ->get();
 
 
-
+        View::share('title', 'Điểm danh');
         return view('teacher.attendance', [
             'schedules' => $schedules,
 

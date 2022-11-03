@@ -3,9 +3,11 @@
 use App\Http\Controllers\AccountController;
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ClassOfMineController;
 use App\Http\Controllers\ClassScheduleController;
 use App\Http\Controllers\ScheduleTeacherController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -36,9 +38,14 @@ Route::middleware(['auth','role:0'])->group(function () {
         Route::resources([
             'class' => ClassScheduleController::class,
         ]);
+        Route::resources([
+            'teacher' => TeacherController::class,
+        ]);
         Route::post('/class/import', [ClassScheduleController::class, 'importCsv'])->name('importCsv');
     });
 });
+
+
 Route::middleware(['auth','role:1'])->group(function () {
     Route::get('/teacher', function () {
         View::share('title', 'Teacher');
@@ -47,6 +54,7 @@ Route::middleware(['auth','role:1'])->group(function () {
     Route::name("teacher.")->prefix('teacher')->group(function () {
         Route::get('/schedule',[ScheduleTeacherController::class, 'index'])->name('schedule');
         Route::get('/attendance',[AttendanceController::class, 'index'])->name('attendance');
+        Route::get('/classTeacher',[ClassOfMineController::class, 'indexTeacher'])->name('classTeacher');
         Route::post('/getAttendanceClass',[AttendanceController::class, 'getAttendanceClass'])->name('getAttendanceClass');
         Route::post('/attendance',[AttendanceController::class, 'attendance'])->name('attendanceStudent');
     });
@@ -55,10 +63,10 @@ Route::middleware(['auth','role:1'])->group(function () {
 
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/student', [StudentController::class,'index'])->name('student');
-    Route::get('/student/calendar', [StudentController::class,'viewCalendar']);
+    Route::get('/student/calendar', [StudentController::class,'viewCalendar'])->name('viewCalendar');
+    Route::get('/classStudent',[ClassOfMineController::class, 'indexStudent'])->name('classStudent');
     Route::get('/progress/{progress}', [StudentController::class,'progress'])->name('progress');
     Route::post('/payment', [StudentController::class,'paymentQR'])->name('payment');
     Route::get('/resultPayment', [StudentController::class,'resultPayment'])->name('resultPayment');
-
 });
 //Route::get('/getSchedule', [ApiController::class,'getSchedule'])->name('getSchedule');

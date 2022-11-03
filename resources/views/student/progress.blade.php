@@ -2,7 +2,7 @@
 <!-- start page title -->
 
 @section('breadcrum')
-    {{ Breadcrumbs::render('home') }}
+    {{ Breadcrumbs::render('progress') }}
 @endsection
 <!-- end page title -->
 
@@ -19,7 +19,8 @@
                     <div class="form-group mb-3">
                         <label for="validationCustom01">Nhập họ tên</label>
                         <input type="text" class="form-control" id="validationCustom01"
-                               placeholder="Họ tên" required
+                               placeholder="Họ tên" readonly
+                               required
                                @if(Auth::check())
                                    value="{{Auth::user()->name}}"
                             @endif
@@ -37,6 +38,7 @@
                             </div>
                             <input type="text" class="form-control" id="validationCustomUsername"
                                    placeholder="Email" aria-describedby="inputGroupPrepend"
+                                   readonly
                                    required
                                    @if(Auth::check())
                                        value="{{Auth::user()->email}}"
@@ -52,7 +54,8 @@
                     <div class="form-group mb-3">
                         <label for="validationCustom02">Mã SV/CMND /CCCD</label>
                         <input type="text" class="form-control" id="validationCustom02"
-                               placeholder="SV/CMND /CCCD" required
+                               placeholder="SV/CMND /CCCD" readonly
+                               required
                                @if(Auth::check())
                                    value="{{Auth::user()->id}}"
                             @endif
@@ -65,6 +68,7 @@
                         <label for="validationCustom03">Nhập điện thoại</label>
                         <input type="text" class="form-control" id="validationCustom03"
                                placeholder="SDT"
+                               readonly
                                required
                                @if(Auth::check())
                                    value="{{Auth::user()->phone}}"
@@ -81,6 +85,7 @@
                                 <input type="radio" id="validationCustom05" name="customRadio1"
                                        class="custom-control-input" required>
                                 <label class="custom-control-label" for="validationCustom05">MOMO QR</label>
+                                <img  style="width: 100%" src="https://developers.momo.vn/v3/vi/assets/images/static-qr-banner-4ccada6ade3eb8ce5236eab5cabc5894.png" alt="">
                                 <div class="invalid-feedback">
                                     Vui lòng chọn phương thức thanh toán
                                 </div>
@@ -105,11 +110,11 @@
                             <p class="mb-1">
                                 Học phí:   <span class="pr-2 text-nowrap mb-2 d-inline-block">
                                                 <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
-                                                <b>21</b>
+                                                <b>{{  \App\Enums\TimeLineEnum::getTimeWeekEnum($progress->time_line)}} Tuần</b>
                                             </span>
                                 <span class="text-nowrap mb-2 d-inline-block">
                                              Thời lượng học:   <i class="mdi mdi-comment-multiple-outline text-muted"></i>
-                                                <b>741</b>
+                                                   <b>{{number_format($progress->subject->price, 0, '', ',') }}VNĐ</b>
                                             </span>
                             </p>
 

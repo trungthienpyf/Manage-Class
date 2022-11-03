@@ -2,7 +2,7 @@
 <!-- start page title -->
 
 @section('breadcrum')
-    {{ Breadcrumbs::render('home') }}
+    {{ Breadcrumbs::render('classAdmin') }}
 @endsection
 <!-- end page title -->
 
@@ -24,7 +24,7 @@
                 <div class="dt-buttons btn-group">
 
                     <a href="{{route('admin.class.create')}}" class="btn btn-info buttons-print text-white"
-                       type="button"><span>Tạo lớp</span></a>
+                       type="button"><span>Thêm lớp</span></a>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -42,6 +42,13 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-12">
+                @if(session()->has('message'))
+                    <p style="color: #8123b1">{{ session()->get('message') }} </p>
+                @endif
+            </div>
+        </div>
         <table id="basic-datatable" class="table dt-responsive nowrap w-100">
             <thead>
             <tr>
@@ -51,6 +58,7 @@
                 <th>Ca</th>
                 <th>Buổi học</th>
                 <th>Số lượng</th>
+                <th class="d-none">Số lượng</th>
                 <th>Ngày mở lớp dự kiến</th>
                 <th>Giảng viên</th>
                 <th>Phòng</th>
@@ -76,15 +84,14 @@
                                     class="btn btn-info" data-toggle="modal"
                                     data-target="#bs-example-modal-lg{{$class->id}}">Thêm Giảng viên
                             </button>
-                            <div  class="modal fade" id="bs-example-modal-lg{{$class->id}}" tabindex="-1" role="dialog"
-                                 aria-labelledby="myLargeModalLabel" aria-hidden="true" >
-                                <div class="modal-dialog modal-lg" >
+                            <div class="modal fade" id="bs-example-modal-lg{{$class->id}}" tabindex="-1" role="dialog"
+                                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h4 class="modal-title" id="myLargeModalLabel">Large modal</h4>
+                                            <h4 class="modal-title" id="myLargeModalLabel">Giảng viên</h4>
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                                     onclick="hideModal({{$class->id}})">
-
                                                 ×
                                             </button>
                                         </div>
@@ -92,24 +99,22 @@
                                             <div class="card mb-0">
                                                 <div class="card-body">
                                                     <form action="" id="myForm">
-
-
-                                                    <div id="teachers{{$class->id}}" class="row justify-content-sm-between">
-
-                                                    </div>
+                                                        <div id="teachers{{$class->id}}"
+                                                             class="row justify-content-sm-between">
+                                                        </div>
                                                     </form>
                                                 </div> <!-- end card-body-->
                                             </div> <!-- end card -->
                                         </div>
                                         <div class="modal-footer">
-                                            <button onclick="hideModal({{$class->id}})"  type="button" class="btn btn-light" data-dismiss="modal">Close
+                                            <button onclick="hideModal({{$class->id}})" type="button"
+                                                    class="btn btn-light" data-dismiss="modal">Đóng
                                             </button>
                                             <button onclick="buttonUpdate({{$class->id}})"
                                                     id="buttonUpdate{{$class->id}}" type="button"
                                                     class="btn btn-primary"
                                                     data-dismiss="modal"
-                                            >Save changes
-
+                                            >Cập nhật giảng viên
                                             </button>
                                         </div>
                                     </div><!-- /.modal-content -->
@@ -117,6 +122,7 @@
                             </div><!-- /.modal -->
                         </td>
                     @endif
+
                     @if(!empty($class->room))
                         <td>{{  $class->room->name}} </td>
                     @else
@@ -125,11 +131,7 @@
                         </td>
                     @endif
                     <td>
-
-                        {{--     <a href="{{route('admin.class.edit', $class->id)}}" class="btn btn-primary btn-sm">Sửa</a>
-                                   <a href="{{route('admin.class.delete', $class->id)}}" class="btn btn-danger btn-sm">Xóa</a> --}}
                         <a href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></a>
-                        {{--                  <button type="button" class="btn btn-success mb-2 mr-1"></i></button>--}}
                         <a href="" class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></a>
                     </td>
                 </tr>
@@ -153,17 +155,18 @@
     <!-- Datatable Init js -->
     <script>
 
-        function hideModal(id){
+        function hideModal(id) {
             console.log(id)
-            $("#teachers"+id).empty();
+            $("#teachers" + id).empty();
         }
+
         $("#csv").change(function () {
             $("#formCsv").submit();
 
         })
 
         function buttonUpdate(id) {
-           console.log(id, $("#myForm input[name=teacher_id]:checked").val())
+            console.log(id, $("#myForm input[name=teacher_id]:checked").val())
             $.ajax({
                 url: "{{route('updateTeacher')}}",
                 type: "POST",
@@ -175,11 +178,17 @@
                 success: function (data) {
                     console.log(data)
                     if (data.status == 200) {
-                        console.log(1)
-                        $("#loadTeacher"+id).remove();
-                        $("#nameTeacher"+id).append($("#myForm input[name=teacher_id]:checked").parent().find('label').text());
+
+                        $("#loadTeacher" + id).remove();
+                        $("#nameTeacher" + id).append($("#myForm input[name=teacher_id]:checked").parent().find('label').text());
                     }
-                    $('#bs-example-modal-lg'+id).remove();
+                    $('#bs-example-modal-lg' + id).remove();
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Cập nhật giáo viên thành công',
+                        icon: 'success',
+                        position: 'top-right',
+                    })
                 }
             });
         }
@@ -190,7 +199,7 @@
             let weekdays = $('#loadTeacher' + id).parent().parent().find('td').eq(4).attr('data-value')
             let time_start = $('#loadTeacher' + id).parent().parent().find('td').eq(6).attr('data-value')
             let time_end = $('#loadTeacher' + id).parent().parent().find('td').eq(7).attr('data-value')
-            $('#bs-example-modal-lg'+id).modal({
+            $('#bs-example-modal-lg' + id).modal({
                 backdrop: 'static',
                 keyboard: false
             })
@@ -205,9 +214,9 @@
                 },
                 success: function (data) {
 
-                    $('#teachers'+id).empty()
+                    $('#teachers' + id).empty()
                     data.forEach(function (value) {
-                        $('#teachers'+id).append(`   <div class="col-sm-6 mb-2 mb-sm-0">
+                        $('#teachers' + id).append(`   <div class="col-sm-6 mb-2 mb-sm-0">
                                             <div class="custom-control custom-radio">
 
                                                 <input type="radio" name="teacher_id" class="custom-control-input"  id="${value.id}" value="${value.id}">
