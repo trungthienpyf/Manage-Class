@@ -14,11 +14,13 @@ class StudentFactory extends Factory
      */
     public function definition()
     {
+        $faker = \Faker\Factory::create('vi_VN');
+
         return [
-            'name' => $this->faker->name(),
+            'name' => $faker->name(),
             'password' => '456', // password
-            'phone' =>$this->faker->phoneNumber(),
-            'email' => $this->faker->unique()->safeEmail(),
+            'phone' =>$faker->phoneNumber(),
+            'email' => $faker->unique()->safeEmail(),
         ];
     }
 }

@@ -10,6 +10,7 @@ use App\Mail\NotificationChangeDateClass;
 use App\Mail\RegisterClass;
 use App\Models\Attendance;
 use App\Models\ClassSchedule;
+use App\Models\RegisterTeach;
 use App\Models\Room;
 use App\Models\Student;
 use App\Models\Subject;
@@ -21,14 +22,12 @@ class TestController extends Controller
 {
     public function test()
     {
+return RegisterTeach::query()
+    ->where('weekdays', 1)
+    ->where('shift', 1)
 
-        $q = ClassSchedule::query()
-            ->with('subject')
-            ->with('room')
-            ->whereHas('teacher', function ($query) {
-                $query->where('id', 2);
-            })
-            ->get(['id','time_start as start', 'time_end as end', 'weekdays', 'subject_id', 'room_id']);
-        return $q;
+    ->get();
+
+
     }
 }

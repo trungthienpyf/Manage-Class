@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Teacher::factory(10)->create();
         \App\Models\Room::factory(10)->create();
         \App\Models\Subject::factory(5)->create();
-        $faker = \Faker\Factory::create();
+        $faker = \Faker\Factory::create('vi_VN');
         $arr = [];
         for ($i = 1; $i <= 5; $i++) {
             $arr[] = [

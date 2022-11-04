@@ -13,4 +13,5 @@ class Subject extends Model
     {
         return $this->hasMany(ClassSchedule::class);
     }
+
 }

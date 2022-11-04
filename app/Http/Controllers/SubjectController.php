@@ -2,40 +2,28 @@
 
 namespace App\Http\Controllers;
 
-
-use App\Models\Teacher;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
 
-class TeacherController extends Controller
+class SubjectController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        View::share('title', 'Lớp học');
-
-
-        $teachers = Teacher::all();
-
-        return view('admin.teacher.index', [
-            'teachers' => $teachers,
-
-        ]);
+        //
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        View::share('title', 'Thêm giáo viên');
-        return view('admin.teacher.create');
+        //
     }
 
     /**

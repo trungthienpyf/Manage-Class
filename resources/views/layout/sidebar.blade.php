@@ -58,7 +58,7 @@
                 </li>
 
                 <li class="side-nav-item">
-                    <a href="#" class="side-nav-link">
+                    <a href="{{route('admin.teacher.index')}}" class="side-nav-link">
                         <i class="uil-calender"></i>
                         <span> Quản lý Giáo viên </span>
                     </a>
@@ -112,7 +112,7 @@
                     </a>
                 </li>
                 <li class="side-nav-item">
-                    <a href="#" class="side-nav-link">
+                    <a href="{{route('teacher.register.index')}}" class="side-nav-link">
                         <i class="uil-calender"></i>
                         <span> Đăng ký lịch dạy </span>
                     </a>

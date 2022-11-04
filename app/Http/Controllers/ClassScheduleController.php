@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Enums\ShiftClassEnum;
 use App\Enums\TimeLineEnum;
 use App\Enums\WeekdaysClassEnum;
+use App\Http\Requests\StoreClassRequest;
 use App\Imports\ClassScheduleImport;
 use App\Models\ClassSchedule;
+use App\Models\RegisterTeach;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -69,7 +71,7 @@ class ClassScheduleController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreClassRequest $request)
     {
         //
 
@@ -80,8 +82,8 @@ class ClassScheduleController extends Controller
             'time_start' => $time_start ." ".$timeOfShift[0],
             'time_end' => $time_end ." ". $timeOfShift[1],
         ]);
-        ClassSchedule::create($request->all());
-
+      $class=  ClassSchedule::create($request->all());
+        RegisterTeach::query()->where('teacher_id', $request->teacher_id)->update(['status' => 1, 'classSchedule_id' => $class->id]);
         return redirect()->route('admin.class.index');
     }
 
@@ -123,10 +125,11 @@ class ClassScheduleController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        ClassSchedule::find($id)->forceDelete();
+        return redirect()->route('admin.class.index');
     }
 }

@@ -13,8 +13,9 @@ class RoomFactory extends Factory
      */
     public function definition()
     {
+        $faker = \Faker\Factory::create('vi_VN');
         return [
-            'name' => $this->faker->name(),
+            'name' => $faker->creditCardExpirationDateString (),
         ];
     }
 }

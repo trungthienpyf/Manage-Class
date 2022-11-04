@@ -127,4 +127,25 @@ final class WeekdaysClassEnum extends Enum
                 return [3, 5, 7];
         }
     }
+//    public static function getWeekdaysFirst($value)
+//    {
+//        switch ($value) {
+//            case 1:
+//                return [2];
+//            case 2:
+//                return 2;
+//            case 3:
+//                return 4;
+//            case 4:
+//                return 3;
+//            case 5:
+//                return 3;
+//            case 6:
+//                return 5;
+//            case 7:
+//                return 2;
+//            case 8:
+//                return 3;
+//        }
+//    }
 }

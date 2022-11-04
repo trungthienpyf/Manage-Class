@@ -12,11 +12,6 @@
 
     <!-- end row -->
 
-    <style>
-        .datepicker {
-            z-index: 9999 !important;
-        }
-    </style>
 
 @endpush
 <!-- end row -->
@@ -26,6 +21,19 @@
 
     <div class="col-12">
         <form method="post" action="{{route('admin.class.store')}}">
+            <div class="row">
+                <div class="col-12">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+
+                                @foreach ($errors->all() as $error)
+                                    <p>{{ $error }}</p>
+                                @endforeach
+
+                        </div>
+                    @endif
+                </div>
+            </div>
             <div class="row">
                 <div class="col-6">
                     @csrf
@@ -161,7 +169,7 @@
                 });
             }
 
-            function loadTeacher(shift, weekdays, time_start, time_end) {
+            function loadTeacher(shift, weekdays, time_start, time_end,subject) {
 
                 $.ajax({
                     url: "{{route('getTeachers')}}",
@@ -171,22 +179,28 @@
                         weekdays: weekdays,
                         time_start: time_start,
                         time_end: time_end,
+                        subject: subject,
                     },
                     success: function (response) {
                         console.log(response)
-
-
+                        response[0].forEach(function(item,i){
+                            if(response[1].includes(item.id)){
+                                response[0].splice(i, 1);
+                                response[0].unshift(item);
+                            }
+                        });
+                        console.log(response[0])
                         $('#teachers').empty()
                         $('#count_teachers').empty()
 
-                        $('#count_teachers').append(`(${response.length})`)
+                        $('#count_teachers').append(`(${response[0].length})`)
 
-                        response.forEach(function (value) {
+                        response[0].forEach(function (value) {
                             $('#teachers').append(`<div class="col-sm-6 mb-2 mb-sm-0">
                                             <div class="custom-control custom-radio">
                                                 <input type="radio" name="teacher_id" class="custom-control-input" id="${value.id}" value="${value.id}">
                                                 <label class="custom-control-label" for="${value.id}" >
-                                                   ${value.name}
+                                                   ${value.name} ${response[1].includes(value.id) ? '(Đăng ký dạy)' : ''}
                                                 </label>
                                             </div>
                                         </div>
@@ -228,6 +242,7 @@
 
             let numberweek = 0
             timeLine.change(function () {
+                let subject = $('#subject').find(":selected").val()
                 if($(this).val() == ""){
                     console.log(1)
                     $('#time_start').parent().addClass('d-none');
@@ -254,24 +269,27 @@
                     $('#time_end').val(timeChange);
                 }
                 loadRoom(idShift, weekdays, time_start, timeChange)
-                loadTeacher(idShift, weekdays, time_start, timeChange)
+                loadTeacher(idShift, weekdays, time_start, timeChange,subject)
                 }
 
             });
 
             $('#time_start').change(function () {
+                let subject = $('#subject').find(":selected").val()
                 time_start = $(this).val()
                 $("#time_end").val(new Date(+new Date($(this).val()) + numberweek).toISOString().split('T')[0]);
                 console.log($("#time_end").val())
                 loadRoom(idShift, weekdays, time_start, $("#time_end").val())
-                loadTeacher(idShift, weekdays, time_start, $("#time_end").val())
+                loadTeacher(idShift, weekdays, time_start, $("#time_end").val(),subject)
             })
 
             let idShift = 1
             $("#shift").change(function () {
+                let subject = $('#subject').find(":selected").val()
+                console.log(subject)
                 idShift = $(this).find(":selected").val()
                 loadRoom(idShift, weekdays, time_start, timeChange)
-                loadTeacher(idShift, weekdays, time_start, timeChange)
+                loadTeacher(idShift, weekdays, time_start, timeChange,subject)
                 $.ajax({
                     url: '{{ route('getWeekdays') }}',
                     type: 'post',
@@ -286,7 +304,10 @@
                     }
                 })
             })
-
+            $("#subject").change(function () {
+                let subject = $('#subject').find(":selected").val()
+                loadTeacher(idShift, weekdays, time_start, timeChange,subject)
+            })
 
         });
     </script>

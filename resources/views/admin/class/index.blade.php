@@ -130,9 +130,24 @@
                             <button class="btn btn-primary">Thêm Phòng</button>
                         </td>
                     @endif
-                    <td>
-                        <a href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></a>
-                        <a href="" class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></a>
+                    <td class="d-flex">
+
+
+                        <form  method="post">
+                            @method('put')
+                            @csrf
+                            <button  class="btn btn-primary btn-sm">
+                                <i class=" mdi mdi-square-edit-outline"></i>
+                            </button>
+                        </form>
+
+                            <form action="{{route('admin.class.destroy',$class->id)}}" method="post">
+                                @method('delete')
+                                @csrf
+                                <button  class="btn btn-danger btn-sm">
+                                    <i class=" mdi mdi-delete-alert"></i>
+                                </button>
+                            </form>
                     </td>
                 </tr>
             @endforeach
@@ -213,15 +228,20 @@
                     time_end: time_end,
                 },
                 success: function (data) {
-
+                    data[0].forEach(function(item,i){
+                        if(data[1].includes(item.id)){
+                            data[0].splice(i, 1);
+                            data[0].unshift(item);
+                        }
+                    });
                     $('#teachers' + id).empty()
-                    data.forEach(function (value) {
+                    data[0].forEach(function (value) {
                         $('#teachers' + id).append(`   <div class="col-sm-6 mb-2 mb-sm-0">
                                             <div class="custom-control custom-radio">
 
                                                 <input type="radio" name="teacher_id" class="custom-control-input"  id="${value.id}" value="${value.id}">
                                                 <label class="custom-control-label" for="${value.id}" >
-                                                   ${value.name}
+                                                   ${value.name} ${data[1].includes(value.id) ? '(Đăng ký dạy)' : ''}
                                                 </label>
 
                                             </div>

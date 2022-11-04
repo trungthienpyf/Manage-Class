@@ -13,9 +13,11 @@ class TeacherFactory extends Factory
      */
     public function definition()
     {
+        $faker = \Faker\Factory::create('vi_VN');
+
         return [
-            'name' => $this->faker->name(),
-            'phone' =>$this->faker->phoneNumber(),
+            'name' => $faker->firstNameFemale() . ' '.$faker->firstNameMale() . ' '. $faker->lastName(),
+            'phone' =>  $faker->phoneNumber(),
             'password' => '123', // password
             'level' => '1',
         ];

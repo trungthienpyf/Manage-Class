@@ -13,9 +13,11 @@ class SubjectFactory extends Factory
      */
     public function definition()
     {
+        $faker = \Faker\Factory::create('vi_VN');
+
         return [
-            'name' => $this->faker->name(),
-            'price' =>$this->faker->randomNumber(3),
+            'name' => $faker->name(),
+            'price' =>$faker->randomNumber(3),
 
         ];
     }

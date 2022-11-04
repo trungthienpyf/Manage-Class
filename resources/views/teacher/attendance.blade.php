@@ -39,7 +39,7 @@
                                                     <label for="date">Buổi</label>
                                                     <select class="form-control select2" id="date{{$schedule->id}}"
                                                             onChange="dateChange({{$schedule->id}})" name="date"
-                                                            data-toggle="select2">
+                                                           >
                                                     </select>
                                                 </div>
                                             </div>
@@ -195,8 +195,10 @@
 
         }
         function submitForm(id, event) {
-            let date = $('#date' + id).val()
+
+
             $("#form" + id).submit(function (e) {
+                let date = $('#date' + id).val()
                 e.preventDefault()
                 e.stopImmediatePropagation()
                 console.log(id)
@@ -226,8 +228,12 @@
                         })
                         $("#buttonAttendance"+id).text("Cập nhật điểm danh");
                         let valueAttr = $("#optionSelected" + date+id).text();
+
                         let str= valueAttr.split('C')
-                    $(`span[title="${valueAttr}"]`).text(str[0])
+
+
+
+                        $("#optionSelected" + date+id).text(str[0])
                     }
 
 

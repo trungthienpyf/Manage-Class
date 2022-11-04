@@ -8,6 +8,7 @@ use App\Models\Attendance;
 use App\Models\AttendanceStudent;
 use App\Models\ClassSchedule;
 use App\Models\ClassStudent;
+use App\Models\RegisterTeach;
 use App\Models\Room;
 use App\Models\Teacher;
 use Carbon\Carbon;
@@ -62,7 +63,7 @@ class ApiController extends Controller
 
 
                 $schedule = $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($item->weekdays),
-                    date('d-m-Y', strtotime($item->start)), date('d-m-Y', strtotime($item->end)),
+                    date('d-m-Y H:i:s', strtotime($item->start)), date('d-m-Y H:i:s', strtotime($item->end)),
                     $nameSubject . " - " . $nameRoom,
                     $item->id,
                     $attendance,
@@ -91,7 +92,7 @@ class ApiController extends Controller
         $arr = [];
         foreach ($q as $item) {
             $schedule = $this->weekDaysBetween(WeekdaysClassEnum::getWeekdays($item->weekdays),
-                date('d-m-Y', strtotime($item->start)), date('d-m-Y', strtotime($item->end)), $item->subject->name . " - " . $item->room->name);
+                date('d-m-Y H:i:s', strtotime($item->start)), date('d-m-Y H:i:s', strtotime($item->end)), $item->subject->name . " - " . $item->room->name);
             $arr = array_merge($arr, $schedule);
         }
         return $arr;
@@ -107,8 +108,8 @@ class ApiController extends Controller
 
         $array = $this->weekDaysBetween(
             WeekdaysClassEnum::getWeekdays($q->weekdays),
-            date('d-m-Y', strtotime($q->start)),
-            date('d-m-Y', strtotime($q->end))
+            date('d-m-Y H:i:s', strtotime($q->start)),
+            date('d-m-Y H:i:s', strtotime($q->end))
         );
         $arr = [];
         $i = 0;
@@ -138,7 +139,6 @@ class ApiController extends Controller
         $endTime = Carbon::createFromFormat('d-m-Y', $end);
         $result = [];
         $i = 0;
-
         while ($startTime->lt($endTime)) {
 
             if (in_array($startTime->dayOfWeek, $requiredDays)) {
@@ -151,32 +151,31 @@ class ApiController extends Controller
             $startTime->addDay();
             $i++;
         }
-        $interval=[];
+        $interval = [];
         foreach ($result as $day) {
 
-          $value=abs(strtotime(date("Y-m-d H:i:s")) - strtotime($day));
+            $value = abs(strtotime(date("Y-m-d H:i:s")) - strtotime($day));
             $interval[] = $value;
         }
 
-        if(empty($interval)){
+        if (empty($interval)) {
             return "";
         }
-            asort($interval);
-            $closest = key($interval);
-
-
+        asort($interval);
+        $closest = key($interval);
 
 
         $date = date('d-m-Y', strtotime($result[$closest]));
 
-        return  "Buổi " . $shift . " - Thứ " . date('w', strtotime($result[$closest])) . " Ngày " .$date ;
+        return "Buổi " . $shift . " - Thứ " . date('w', strtotime($result[$closest])) . " Ngày " . $date;
     }
 
     function weekDaysBetween($requiredDays, $start, $end, $title = '', $id = null, $arr = null, $arr2 = null)
     {
 
-        $startTime = Carbon::createFromFormat('d-m-Y', $start);
-        $endTime = Carbon::createFromFormat('d-m-Y', $end);
+
+        $startTime = Carbon::createFromFormat('d-m-Y H:i:s', $start);
+        $endTime = Carbon::createFromFormat('d-m-Y H:i:s', $end);
 
         $result = [];
         $i = 0;
@@ -186,8 +185,10 @@ class ApiController extends Controller
             if (in_array($startTime->dayOfWeek, $requiredDays)) {
                 $result[$i]['title'] = $title;
 
-                $result[$i]['start'] = Carbon::parse($startTime->copy())->toDateTimeString();
-                $result[$i]['end'] = Carbon::parse($startTime->copy()->addHours(4))->toDateTimeString();
+                $result[$i]['start'] = Carbon::parse($startTime->copy())->format('Y-m-d H:i:s') ;
+
+                $result[$i]['end'] = Carbon::parse($startTime->copy()->addHours(4))->format('Y-m-d H:i:s');
+
                 $result[$i]['id'] = $id;
                 if (!is_null($arr)) {
                     $check = date("Y-m-d", strtotime($result[$i]['start']));
@@ -261,16 +262,31 @@ class ApiController extends Controller
             })->get();
     }
 
-    //fix ngay hoc trung
+
     public function getTeachers(Request $request)
     {
+
+        $teachersRegister = RegisterTeach::query()
+            ->where('weekdays', $request->weekdays)
+            ->where('shift', $request->shift)
+            ->where('subject_id', $request->subject)
+            ->get();
+
+        $arr = [];
+        if ($teachersRegister) {
+            foreach ($teachersRegister as $teacher) {
+                $arr[] = $teacher->teacher_id;
+            }
+        }
+
         $time_start = $request->time_start;
         $time_end = $request->time_end;
         $shift = $request->shift;
         $weekdays = $request->weekdays;
-        $model = Teacher::query();
+        $model = Teacher::query()->where('level', 1);
         $teachers = $this->exceptObject($model, $weekdays, $shift, $time_start, $time_end);
-        return response()->json($teachers);
+        $data = [$teachers, $arr];
+        return response()->json($data);
     }
 
     public function updateTeacher(Request $request)
@@ -280,7 +296,9 @@ class ApiController extends Controller
 
         ClassSchedule::query()
             ->where('id', $class_id)->update(['teacher_id' => $teacher_id]);
-
+        RegisterTeach::query()->where('teacher_id', $teacher_id)->update(['status' => 1, 'classSchedule_id' => $class_id]);
         return response()->json(['status' => 200]);
     }
+
+
 }

@@ -14,8 +14,8 @@ class CreateAttendanceStudentsTable extends Migration
     public function up()
     {
         Schema::create('attendance_students', function (Blueprint $table) {
-            $table->foreignId('attendance_id')->constrained();
-            $table->foreignId('student_id')->constrained();
+            $table->foreignId('attendance_id')->constrained()->onDelete('cascade');
+            $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->primary(['attendance_id', 'student_id']);
             $table->tinyInteger('status')->comment('statusAttendanceEnums');
         });

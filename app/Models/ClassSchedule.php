@@ -4,14 +4,16 @@ namespace App\Models;
 
 use App\Enums\ShiftClassEnum;
 use App\Enums\WeekdaysClassEnum;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class ClassSchedule extends Model
 {
 
-
+    use SoftDeletes;
     use HasFactory;
     protected $fillable=[
 
@@ -44,9 +46,6 @@ class ClassSchedule extends Model
 
             }
 
-//            if($item->status == 1){
-//                $num+= ->count();
-//            }
         }
         return "Đã học: ".$num . " Vắng: ".$num2." Vắng phép: ".$num3;
     }
@@ -87,6 +86,9 @@ class ClassSchedule extends Model
         return   "Thứ " . implode('-', $weeksday);
     }
     public function getNameShiftAttribute(){
+
+
+
         return ShiftClassEnum::getShift($this->shift);
     }
     public function getTimeStartExpectedAttribute(){

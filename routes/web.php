@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassOfMineController;
 use App\Http\Controllers\ClassScheduleController;
+use App\Http\Controllers\RegisterTeachController;
 use App\Http\Controllers\ScheduleTeacherController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
@@ -57,6 +58,9 @@ Route::middleware(['auth','role:1'])->group(function () {
         Route::get('/classTeacher',[ClassOfMineController::class, 'indexTeacher'])->name('classTeacher');
         Route::post('/getAttendanceClass',[AttendanceController::class, 'getAttendanceClass'])->name('getAttendanceClass');
         Route::post('/attendance',[AttendanceController::class, 'attendance'])->name('attendanceStudent');
+        Route::resources([
+            'register' => RegisterTeachController::class,
+        ]);
     });
 });
 

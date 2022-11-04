@@ -36,6 +36,8 @@
                                                 <b>{{  \App\Enums\TimeLineEnum::getTimeWeekEnum($class->time_line)}} Tuần</b>
                                             </span><span class="text-nowrap mb-2 d-inline-block">
                                              Thời gian học:  <b>  {{$class->name_weekday}} - Buổi {{$class->name_shift}}</b>
+                                            </span><span class="text-nowrap mb-2 d-inline-block">
+                                             Ngày khai giảng:  <b>  {{$class->time_start_expected}} </b>
                                             </span>
                     </p>
 

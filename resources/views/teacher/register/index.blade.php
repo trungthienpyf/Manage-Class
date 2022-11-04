@@ -23,8 +23,8 @@
             <div class="col-sm-4 col-md-6 pb-2">
                 <div class="dt-buttons btn-group">
 
-                    <a href="{{route('admin.teacher.create')}}" class="btn btn-info buttons-print text-white"
-                       type="button"><span>Thêm giáo viên</span></a>
+                    <a href="{{route('teacher.register.create')}}" class="btn btn-info buttons-print text-white"
+                       type="button"><span>Tạo đăng ký</span></a>
                 </div>
             </div>
             <div class="col-sm-6">
@@ -49,26 +49,30 @@
             <thead>
             <tr>
                 <th>#</th>
-                <th>Tên giáo viên</th>
-                <th>Số điện thoại</th>
-                <th>Chức vụ</th>
+                <th>Ngày đăng ký</th>
+                <th>Ca đăng ký</th>
+                <th>Môn đăng ký</th>
+                <th>Trạng thái</th>
                 <th>Hành động</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($teachers as $teacher)
+            @foreach($history as $each)
                 <tr>
-                    <td>{{$teacher->id}}</td>
-                    <td>{{$teacher->name}}</td>
-                    <td>{{$teacher->phone}}</td>
-                    <td>{{$teacher->level ==1 ? 'Giáo viên': 'Giáo vụ'}}</td>
+                    <td>{{$each->id}}</td>
+                    <td>{{\App\Enums\WeekdaysClassEnum::getNameEnum($each->weekdays) }}</td>
+                    <td>{{\App\Enums\ShiftClassEnum::getShift($each->shift) }}</td>
+                    <td>{{$each->subject->name}}</td>
+                    <td>{{$each->status == 1 ? 'Đã duyệt': 'Chưa duyệt'}}</td>
                     <td>
 
                         {{--     <a href="{{route('admin.class.edit', $class->id)}}" class="btn btn-primary btn-sm">Sửa</a>
                                    <a href="{{route('admin.class.delete', $class->id)}}" class="btn btn-danger btn-sm">Xóa</a> --}}
-                        <a href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></a>
+
                         {{--                  <button type="button" class="btn btn-success mb-2 mr-1"></i></button>--}}
+                        @if(empty($each->classSchedule_id))
                         <a href="" class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></a>
+                            @endif
                     </td>
                 </tr>
             @endforeach

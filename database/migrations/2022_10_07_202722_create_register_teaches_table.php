@@ -18,9 +18,9 @@ class CreateRegisterTeachesTable extends Migration
             $table->tinyInteger('weekdays')->comment('WeekDaysEnums');
             $table->tinyInteger('shift')->comment('ShiftEnums');
             $table->tinyInteger('status')->comment('StatusRegisterTeachEnums')->default(0);
-            $table->foreignId('teacher_id')->constrained('teachers');
-            $table->foreignId('subject_id')->constrained('subjects');
-            $table->foreignId('classSchedule_id')->nullable()->constrained('class_schedules');
+            $table->foreignId('teacher_id')->constrained('teachers')->onDelete('cascade');
+            $table->foreignId('subject_id')->constrained('subjects')->onDelete('cascade');
+            $table->foreignId('classSchedule_id')->nullable()->constrained('class_schedules')->onDelete('cascade');
             $table->timestamps();
         });
     }

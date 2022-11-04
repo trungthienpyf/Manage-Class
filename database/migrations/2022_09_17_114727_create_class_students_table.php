@@ -15,8 +15,8 @@ class CreateClassStudentsTable extends Migration
     {
         Schema::create('class_students', function (Blueprint $table) {
 
-            $table->foreignId('classSchedule_id')->constrained('class_schedules');
-            $table->foreignId('student_id')->constrained('students');
+            $table->foreignId('classSchedule_id')->constrained('class_schedules')->onDelete('cascade');
+            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
             $table->primary(['classSchedule_id', 'student_id']);
             $table->tinyInteger('status')->comment('StatusClassStudentEnums')->default(0);
             $table->string('payment')->nullable();
