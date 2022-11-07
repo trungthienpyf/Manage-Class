@@ -34,10 +34,7 @@
                                 <ul class="list-inline font-13 text-right">
                                     <li class="list-inline-item">
 
-
-
-
-                                        {{  $dateCloset[$schedule->id] ? 'Ngày dạy tiếp theo: '. $dateCloset[$schedule->id] : 'Lịch dạy đã kết thúc'  }}  <i class="uil uil-schedule font-16 mr-1"></i>
+                                        {{  $dateCloset[$schedule->id] ? 'Ngày dạy tiếp theo: '. $dateCloset[$schedule->id] : 'Lịch học đã kết thúc'  }}  <i class="uil uil-schedule font-16 mr-1"></i>
                                     </li>
 
                                 </ul>

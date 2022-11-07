@@ -67,6 +67,7 @@
             </thead>
             <tbody>
             @foreach($classes as $class)
+
                 <tr>
                     <td>{{$class->id}}</td>
                     <td>{{$class->name_schedule}}</td>

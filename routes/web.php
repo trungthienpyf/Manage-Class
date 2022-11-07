@@ -10,6 +10,7 @@ use App\Http\Controllers\ScheduleTeacherController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
+use App\Http\Middleware\PreventRouteMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 
@@ -69,7 +70,7 @@ Route::middleware(['auth:student'])->group(function () {
     Route::get('/student', [StudentController::class,'index'])->name('student');
     Route::get('/student/calendar', [StudentController::class,'viewCalendar'])->name('viewCalendar');
     Route::get('/classStudent',[ClassOfMineController::class, 'indexStudent'])->name('classStudent');
-    Route::get('/progress/{progress}', [StudentController::class,'progress'])->name('progress');
+    Route::get('/progress/{progress}', [StudentController::class,'progress'])->name('progress')->middleware(PreventRouteMiddleware::class);
     Route::post('/payment', [StudentController::class,'paymentQR'])->name('payment');
     Route::get('/resultPayment', [StudentController::class,'resultPayment'])->name('resultPayment');
 });

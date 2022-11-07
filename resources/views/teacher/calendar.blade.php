@@ -16,7 +16,7 @@
             <div class="card-body">
 
                 <div class="row">
-                    <div id='calendar' style="width: 100%">
+                    <div id='calendar' style="width: 1100px; margin: 40px auto;">
 
                     </div>
                 </div>
@@ -43,7 +43,7 @@
 
                 var calendarEl = document.getElementById('calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
-                    width: 1000,
+
                     initialView: 'timeGridWeek',
 
                     headerToolbar: {

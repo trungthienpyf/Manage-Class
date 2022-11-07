@@ -16,8 +16,9 @@
 
         .colorFill {
             position: absolute;
-            top:50px;
-            left: 1000px;
+            top:200px;
+
+            left: 40px;
           display: flex;
             width: 100%;
             height: 100%;
@@ -26,8 +27,8 @@
         .colorFill2 {
 
             position: absolute;
-            top:80px;
-            left: 1000px;
+            top:230px;
+            left: 40px;
             display: flex;
             width: 100%;
             height: 100%;
@@ -36,8 +37,8 @@
         .colorFill3 {
 
             position: absolute;
-            top:20px;
-            left: 1000px;
+            top:260px;
+            left: 40px;
             display: flex;
             width: 100%;
             height: 100%;
@@ -103,7 +104,7 @@
                         </span>
                         <span> Đi học</span>
                     </div>
-                    <div id='calendar' style="width: 100%">
+                    <div id='calendar' style="width: 1100px; margin: 40px auto;">
 
                     </div>
                 </div>
@@ -131,7 +132,7 @@
 
                 var calendarEl = document.getElementById('calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
-                    width: 1000,
+
                     initialView: 'timeGridWeek',
                     headerToolbar: {
                         right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
@@ -141,7 +142,8 @@
                     },
                     editable: true,
                     selectable: true,
-                    events: response
+                    events: response,
+
                 });
 
                 calendar.setOption('locale', 'vi');

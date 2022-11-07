@@ -33,7 +33,7 @@
                                             </span>
                         <span class="text-nowrap mb-2 d-inline-block">
                                              Thời lượng học:   <i class="mdi mdi-clock-check-outline text-muted"></i>
-                                                <b>{{  \App\Enums\TimeLineEnum::getTimeWeekEnum($class->time_line)}} Tuần</b>
+                                                <b>{{  \App\Enums\TimeLineEnum::getTimeToView($class->time_line)}} Tuần</b>
                                             </span><span class="text-nowrap mb-2 d-inline-block">
                                              Thời gian học:  <b>  {{$class->name_weekday}} - Buổi {{$class->name_shift}}</b>
                                             </span><span class="text-nowrap mb-2 d-inline-block">

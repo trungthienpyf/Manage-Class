@@ -25,7 +25,7 @@
                                aria-controls="todayTasks">
                                 <div class="m-0 pb-2">
                                     <i class="uil uil-angle-down font-18"></i>{{$schedule->subject->name}} <span
-                                        class="text-muted"> Chưa điểm danh</span>
+                                        class="text-muted"> Ngày khai giảng {{$schedule->time_start_real}} - {{$schedule->name_weekday}} - Buổi {{$schedule->name_shift}} </span>
                                 </div>
                             </a>
                             <div class="collapse " id="todayTasks{{$schedule->id}}">
