@@ -42,6 +42,32 @@
                 </div>
             </div>
         </div>
+        <form action="{{route('admin.class.index')}}" id="search">
+        <div class="row">
+
+
+
+            <div class="col-sm-2 pb-2">
+
+                <select name="teacher" id="teacherSearch" class="form-control select2" data-toggle="select2">
+                    <option value="">Giảng viên</option>
+                    @foreach($teachers as $teacher)
+                        <option value="{{$teacher->id}}" {{ request()->teacher==$teacher->id ? 'selected':''}}>{{$teacher->name}}</option>
+                        @endforeach
+                </select>
+            </div>
+            <div class="col-sm-2">
+                    <select name="time" id="timeSearch" class="form-control select2" data-toggle="select2">
+                        <option value=""> Thời gian</option>
+                        <option value="1" {{ request()->time===1? 'selected':''}}>Chưa khai giảng</option>
+                        <option value="2" {{ request()->time==2 ? 'selected':''}}>Đang diễn ra</option>
+                        <option value="3" {{ request()->time==3? 'selected':''}}>Đã hoàn thành</option>
+                    </select>
+
+            </div>
+
+        </div>
+        </form>
         <div class="row">
             <div class="col-12">
                 @if(session()->has('message'))
@@ -170,7 +196,14 @@
 
     <!-- Datatable Init js -->
     <script>
+            $("#teacherSearch").change(function () {
 
+                $("#search").submit();
+            });
+            $("#timeSearch").change(function () {
+
+                $("#search").submit();
+            });
         function hideModal(id) {
             console.log(id)
             $("#teachers" + id).empty();

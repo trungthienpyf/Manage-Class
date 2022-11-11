@@ -10,6 +10,7 @@ use App\Imports\ClassScheduleImport;
 use App\Models\ClassSchedule;
 use App\Models\RegisterTeach;
 use App\Models\Subject;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 use Maatwebsite\Excel\Facades\Excel;
@@ -21,16 +22,34 @@ class ClassScheduleController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         View::share('title', 'Lớp học');
 
 
-        $classes = ClassSchedule::all();
+        $q = ClassSchedule::query();
+            if($request->teacher){
+                $q->whereHas('teacher', function ($query) use ($request) {
+                    $query->where('id',  $request->teacher );
+                });
+            }
+        if($request->time ){
+            if($request->time == 3 ){
+                $q->where('status', 1 )->where('time_end', '<', date('Y-m-d H:i:s'));
+            }else if($request->time == 2) {
 
+                $q->where('status', 1 )->where('time_end', '>', date('Y-m-d H:i:s'));
+
+            }else{
+                $q->where('status', 0 );
+
+            }
+
+        }
+    $classes=$q->get();
         return view('admin.class.index', [
             'classes' => $classes,
-
+            'teachers' => Teacher::all(),
         ]);
     }
     public function importCsv(Request $request)
