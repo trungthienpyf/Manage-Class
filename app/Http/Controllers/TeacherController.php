@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\StoreTeacherRequest;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -42,11 +43,12 @@ class TeacherController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(StoreTeacherRequest $request)
     {
-        //
+        Teacher::create($request->all());
+        return redirect()->route('admin.teacher.index');
     }
 
     /**

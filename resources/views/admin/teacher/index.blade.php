@@ -27,16 +27,7 @@
                        type="button"><span>Thêm giáo viên</span></a>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="text-sm-right">
 
-
-
-                    <label for="csv" class="btn btn-light mb-2 mr-1">Import</label>
-
-
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-12">
@@ -62,14 +53,20 @@
                     <td>{{$teacher->name}}</td>
                     <td>{{$teacher->phone}}</td>
                     <td>{{$teacher->level ==1 ? 'Giáo viên': 'Giáo vụ'}}</td>
-                    <td>
+                    @if($teacher->level == 0)
+                        <td>
 
-                        {{--     <a href="{{route('admin.class.edit', $class->id)}}" class="btn btn-primary btn-sm">Sửa</a>
-                                   <a href="{{route('admin.class.delete', $class->id)}}" class="btn btn-danger btn-sm">Xóa</a> --}}
-                        <a href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></a>
-                        {{--                  <button type="button" class="btn btn-success mb-2 mr-1"></i></button>--}}
-                        <a href="" class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></a>
-                    </td>
+                        </td>
+                    @else
+                        <td>
+
+                            {{--     <a href="{{route('admin.class.edit', $class->id)}}" class="btn btn-primary btn-sm">Sửa</a>
+                                       <a href="{{route('admin.class.delete', $class->id)}}" class="btn btn-danger btn-sm">Xóa</a> --}}
+                            <a href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></a>
+                            {{--                  <button type="button" class="btn btn-success mb-2 mr-1"></i></button>--}}
+                            <a href="" class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></a>
+                        </td>
+                    @endif
                 </tr>
             @endforeach
             </tbody>
@@ -87,7 +84,6 @@
     <script src="{{asset('js/dataTables.responsive.min.js')}}"></script>
     <script src="{{asset('js/responsive.bootstrap4.min.js')}}"></script>
     <script src="{{asset('js/demo.datatable-init.js')}}"></script>
-
 
 @endpush
 

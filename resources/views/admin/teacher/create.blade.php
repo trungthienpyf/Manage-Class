@@ -37,12 +37,12 @@
                     <div class="col-xl-12" data-select2-id="6">
 
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" class="form-control" placeholder="Nhập Tên">
+                            <label for="name">Họ và tên</label>
+                            <input type="text" id="name" class="form-control" name="name" placeholder="Nhập Tên" value="{{old('name')}}">
                         </div>
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" class="form-control" placeholder="Nhập Tên">
+                            <label for="phone">Số điện thoại</label>
+                            <input type="text" id="phone" name="phone" class="form-control" placeholder="Nhập SĐT" value="{{old('phone')}}">
                         </div>
                         <div class="form-group mb-0 justify-content-end row">
                             <div class="col-9">
@@ -55,13 +55,13 @@
                 <div class="col-6">
 
                     <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" class="form-control" placeholder="Nhập Tên">
+                        <label for="password">Mật khẩu</label>
+                        <input type="password" id="password" class="form-control" name="password" placeholder="Nhập mật khẩu" value="{{old('password')}}">
                     </div>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" class="form-control" placeholder="Nhập Tên">
-                    </div>
+
+
+                        <input type="hidden" id="level" value="1" name="level" >
+
 
                 </div>
             </div>
