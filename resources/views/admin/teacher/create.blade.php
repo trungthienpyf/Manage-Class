@@ -41,7 +41,7 @@
                             <input type="text" id="name" class="form-control" name="name" placeholder="Nhập Tên" value="{{old('name')}}">
                         </div>
                         <div class="form-group">
-                            <label for="phone">Số điện thoại</label>
+                            <label for="phone">Số điện thoại/email</label>
                             <input type="text" id="phone" name="phone" class="form-control" placeholder="Nhập SĐT" value="{{old('phone')}}">
                         </div>
                         <div class="form-group mb-0 justify-content-end row">
@@ -58,7 +58,13 @@
                         <label for="password">Mật khẩu</label>
                         <input type="password" id="password" class="form-control" name="password" placeholder="Nhập mật khẩu" value="{{old('password')}}">
                     </div>
-
+                    <div class="form-group">
+                        <label for="type">Mật khẩu</label>
+                        <select name="type" id="type" class="form-control select2" data-toggle="select2">
+                            <option value="1">Giáo viên</option>
+                            <option value="2">Học sinh</option>
+                        </select>
+                    </div>
 
                         <input type="hidden" id="level" value="1" name="level" >
 

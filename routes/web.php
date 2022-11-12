@@ -31,7 +31,7 @@ Route::get('/login', [AccountController::class, 'viewLogin'])->name('login');
 Route::get('/register', [AccountController::class, 'viewRegister'])->name('register');
 Route::post('/signin', [AccountController::class, 'login'])->name('signin');
 Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
-Route::middleware(['auth','role:0'])->group(function () {
+Route::middleware(['auth','role:2'])->group(function () {
     Route::get('/admin', function () {
         View::share('title', 'Admin');
         return view('index');

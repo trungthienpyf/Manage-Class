@@ -24,7 +24,7 @@
                 <div class="dt-buttons btn-group">
 
                     <a href="{{route('admin.teacher.create')}}" class="btn btn-info buttons-print text-white"
-                       type="button"><span>Thêm giáo viên</span></a>
+                       type="button"><span>Thêm thành viên</span></a>
                 </div>
             </div>
 
@@ -39,7 +39,7 @@
         <table id="basic-datatable" class="table dt-responsive nowrap w-100">
             <thead>
             <tr>
-                <th>#</th>
+
                 <th>Tên giáo viên</th>
                 <th>Số điện thoại</th>
                 <th>Chức vụ</th>
@@ -49,11 +49,11 @@
             <tbody>
             @foreach($teachers as $teacher)
                 <tr>
-                    <td>{{$teacher->id}}</td>
+
                     <td>{{$teacher->name}}</td>
                     <td>{{$teacher->phone}}</td>
-                    <td>{{$teacher->level ==1 ? 'Giáo viên': 'Giáo vụ'}}</td>
-                    @if($teacher->level == 0)
+                    <td>{{$teacher->level ? $teacher->level ==2 ? 'Giáo vụ' : 'Giáo viên' :'học sinh'}}</td>
+                    @if($teacher->level == 2)
                         <td>
 
                         </td>

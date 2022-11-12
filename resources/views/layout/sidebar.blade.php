@@ -42,7 +42,7 @@
                 </a>
             </li>
         @else
-            @if(auth()->user()->level == 0)
+            @if(auth()->user()->level == 2)
                 <li class="side-nav-item">
                     <a href="{{route('admin')}}" class="side-nav-link">
                         <i class="uil-home-alt"></i>
@@ -63,12 +63,7 @@
                         <span> Quản lý Giáo viên </span>
                     </a>
                 </li>
-                <li class="side-nav-item">
-                    <a href="#" class="side-nav-link">
-                        <i class="uil-calender"></i>
-                        <span> Quản lý Sinh viên </span>
-                    </a>
-                </li>
+
                 <li class="side-nav-item">
                     <a href="#" class="side-nav-link">
                         <i class="uil-calender"></i>

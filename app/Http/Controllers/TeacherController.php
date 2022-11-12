@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Http\Requests\StoreTeacherRequest;
+use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
@@ -20,10 +21,12 @@ class TeacherController extends Controller
         View::share('title', 'Lớp học');
 
 
-        $teachers = Teacher::all();
+        $teachers2 = Teacher::all();
+        $students=Student::all();
+
 
         return view('admin.teacher.index', [
-            'teachers' => $teachers,
+            'teachers' => $students->concat($teachers2),
 
         ]);
     }
@@ -47,7 +50,13 @@ class TeacherController extends Controller
      */
     public function store(StoreTeacherRequest $request)
     {
-        Teacher::create($request->all());
+        if($request->type==1){
+            Teacher::create($request->all());
+
+        }else
+        {
+            Student::create($request->all());
+        }
         return redirect()->route('admin.teacher.index');
     }
 
