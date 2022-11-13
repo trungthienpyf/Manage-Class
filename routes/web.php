@@ -6,8 +6,10 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassOfMineController;
 use App\Http\Controllers\ClassScheduleController;
 use App\Http\Controllers\RegisterTeachController;
+use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ScheduleTeacherController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TestController;
 use App\Http\Middleware\PreventRouteMiddleware;
@@ -42,6 +44,12 @@ Route::middleware(['auth','role:2'])->group(function () {
         ]);
         Route::resources([
             'teacher' => TeacherController::class,
+        ]);
+        Route::resources([
+            'room' => RoomController::class,
+        ]);
+        Route::resources([
+            'subject' => SubjectController::class,
         ]);
         Route::post('/class/import', [ClassScheduleController::class, 'importCsv'])->name('importCsv');
     });

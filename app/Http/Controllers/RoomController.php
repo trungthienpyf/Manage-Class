@@ -2,28 +2,40 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreRoomRequest;
+use App\Models\Room;
+use App\Models\Student;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
 
 class RoomController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        View::share('title', 'Phòng học');
+
+
+        return view('admin.room.index', [
+            'rooms' => Room::all(),
+
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        View::share('title', 'Thêm phòng học');
+        return view('admin.room.create');
     }
 
     /**
@@ -32,9 +44,10 @@ class RoomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoomRequest $request)
     {
-        //
+        Room::create($request->all());
+        return redirect()->route('admin.room.index');
     }
 
     /**

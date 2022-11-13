@@ -65,13 +65,13 @@
                 </li>
 
                 <li class="side-nav-item">
-                    <a href="#" class="side-nav-link">
+                    <a href="{{route('admin.room.index')}}" class="side-nav-link">
                         <i class="uil-calender"></i>
                         <span> Quản lý Phòng </span>
                     </a>
                 </li>
                 <li class="side-nav-item">
-                    <a href="#" class="side-nav-link">
+                    <a href="{{route('admin.subject.index')}}" class="side-nav-link">
                         <i class="uil-calender"></i>
                         <span> Quản lý Chương trình
                         </span>

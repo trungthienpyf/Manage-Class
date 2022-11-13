@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     use HasFactory;
+     protected $fillable = ['name'];
     public function classSchedules()
     {
         return $this->hasMany(ClassSchedule::class);
     }
+
 }

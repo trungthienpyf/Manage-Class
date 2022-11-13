@@ -23,8 +23,8 @@
             <div class="col-sm-4 col-md-6 pb-2">
                 <div class="dt-buttons btn-group">
 
-                    <a href="{{route('admin.teacher.create')}}" class="btn btn-info buttons-print text-white"
-                       type="button"><span>Thêm thành viên</span></a>
+                    <a href="{{route('admin.subject.create')}}" class="btn btn-info buttons-print text-white"
+                       type="button"><span>Thêm chương trình</span></a>
                 </div>
             </div>
 
@@ -40,38 +40,31 @@
             <thead>
             <tr>
 
-                <th>Tên giáo viên</th>
-                <th>Số điện thoại</th>
-                <th>Chức vụ</th>
-                <th>Hành động</th>
+                <th>#</th>
+                <th>Tên chương trình</th>
+
+                <th>Giá</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($teachers as $teacher)
+            @foreach($subjects as $subject)
                 <tr>
 
-                    <td>{{$teacher->name}}</td>
-                    <td>{{$teacher->phone}}</td>
-                    <td>{{$teacher->level ? $teacher->level ==2 ? 'Giáo vụ' : 'Giáo viên' :'học sinh'}}</td>
-                    @if($teacher->level == 2)
+                    <td>{{$subject->id}}</td>
+                    <td> Phòng {{$subject->name}}</td>
+                    <td> {{number_format($subject->price, 0, '', ',');}} VNĐ</td>
                         <td>
-
-                        </td>
-                    @else
-                        <td>
-
                             {{--     <a href="{{route('admin.class.edit', $class->id)}}" class="btn btn-primary btn-sm">Sửa</a>
                                        <a href="{{route('admin.class.delete', $class->id)}}" class="btn btn-danger btn-sm">Xóa</a> --}}
-                            <button href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></button>
+                            <a href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></a>
                             {{--                  <button type="button" class="btn btn-success mb-2 mr-1"></i></button>--}}
-                            <form action="{{route('admin.teacher.destroy',$teacher)}}" method="post">
-                                @csrf
-                                @method('DELETE')
-                            <button class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></button>
-                            </form>
-                        </td>
-                    @endif
+                            <a href="" class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></a></td>
+
+
+
+
                 </tr>
+
             @endforeach
             </tbody>
         </table>
