@@ -53,12 +53,21 @@
                     <td>{{$room->id}}</td>
                     <td> Phòng {{$room->name}}</td>
 
-                        <td>
-                            {{--     <a href="{{route('admin.class.edit', $class->id)}}" class="btn btn-primary btn-sm">Sửa</a>
-                                       <a href="{{route('admin.class.delete', $class->id)}}" class="btn btn-danger btn-sm">Xóa</a> --}}
-                            <a href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></a>
-                            {{--                  <button type="button" class="btn btn-success mb-2 mr-1"></i></button>--}}
-                            <a href="" class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></a></td>
+                    <td class="d-flex">
+
+
+                        <form action="#" class="pr-2">
+
+
+                            <button class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></button>
+                        </form>
+
+                        <form action="{{route('admin.room.destroy',$room)}}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></button>
+                        </form>
+                    </td>
 
 
 

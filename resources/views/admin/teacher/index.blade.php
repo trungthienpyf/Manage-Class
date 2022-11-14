@@ -52,18 +52,21 @@
 
                     <td>{{$teacher->name}}</td>
                     <td>{{$teacher->phone}}</td>
-                    <td>{{$teacher->level ? $teacher->level ==2 ? 'Giáo vụ' : 'Giáo viên' :'học sinh'}}</td>
+                    <td>{{$teacher->level ? $teacher->level ==2 ? 'Giáo vụ' : 'Giáo viên' :'Học sinh'}}</td>
                     @if($teacher->level == 2)
                         <td>
 
                         </td>
                     @else
-                        <td>
+                        <td class="d-flex">
 
-                            {{--     <a href="{{route('admin.class.edit', $class->id)}}" class="btn btn-primary btn-sm">Sửa</a>
-                                       <a href="{{route('admin.class.delete', $class->id)}}" class="btn btn-danger btn-sm">Xóa</a> --}}
-                            <button href="" class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></button>
-                            {{--                  <button type="button" class="btn btn-success mb-2 mr-1"></i></button>--}}
+
+                            <form action="#" class="pr-2">
+
+
+                            <button class="btn btn-primary btn-sm"><i class="mdi mdi-square-edit-outline"></i></button>
+                            </form>
+
                             <form action="{{route('admin.teacher.destroy',$teacher)}}" method="post">
                                 @csrf
                                 @method('DELETE')

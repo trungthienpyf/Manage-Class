@@ -44,11 +44,11 @@ final class TimeLineEnum extends Enum
     }
     public static function getTimeToView($value)
     {
-        if($value == 2) {
+        if($value == 1) {
             return 2;
-        }else if($value == 5){
+        }else if($value == 2){
             return 5;}
-        else if ($value == 7){
+        else if ($value == 3){
             return 7;
         }
     }

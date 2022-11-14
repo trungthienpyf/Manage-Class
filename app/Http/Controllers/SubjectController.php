@@ -96,10 +96,11 @@ class SubjectController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        Subject::find($id)->delete();
+        return redirect()->route('admin.subject.index');
     }
 }

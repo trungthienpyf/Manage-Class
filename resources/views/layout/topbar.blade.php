@@ -42,7 +42,7 @@
                     aria-labelledby="topbar-userdrop">
                     <!-- item-->
                     <div class=" dropdown-header noti-title">
-                        <h6 class="text-overflow m-0">Welcome !</h6>
+                        <h6 class="text-overflow m-0">Xin chào !</h6>
                     </div>
 
 

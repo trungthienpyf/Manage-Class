@@ -88,10 +88,11 @@ class RoomController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        Room::find($id)->delete();
+        return redirect()->route('admin.room.index');
     }
 }

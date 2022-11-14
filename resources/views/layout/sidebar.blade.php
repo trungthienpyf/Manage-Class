@@ -10,7 +10,7 @@
     <!--- Sidemenu -->
     <ul class="metismenu side-nav mm-show">
 
-        <li class="side-nav-title side-nav-item">Navigation</li>
+        <li class="side-nav-title side-nav-item">Điều hướng</li>
 
 
         @if(is_null(auth()->user()->level))
@@ -77,8 +77,6 @@
                         </span>
                     </a>
                 </li>
-
-
 
             @elseif(auth()->user()->level == 1)
                 <li class="side-nav-item">

@@ -110,7 +110,7 @@
                             <p class="mb-1">
                                 Học phí:   <span class="pr-2 text-nowrap mb-2 d-inline-block">
                                                 <i class="mdi mdi-format-list-bulleted-type text-muted"></i>
-                                                <b>{{  \App\Enums\TimeLineEnum::getTimeWeekEnum($progress->time_line)}} Tuần</b>
+                                                <b>{{  \App\Enums\TimeLineEnum::getTimeToView($progress->time_line)}} Tuần</b>
                                             </span>
                                 <span class="text-nowrap mb-2 d-inline-block">
                                              Thời lượng học:   <i class="mdi mdi-comment-multiple-outline text-muted"></i>

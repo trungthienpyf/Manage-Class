@@ -49,7 +49,7 @@ class ClassScheduleController extends Controller
     $classes=$q->get();
         return view('admin.class.index', [
             'classes' => $classes,
-            'teachers' => Teacher::all(),
+            'teachers' => Teacher::query()->where('level', 1)->get(),
         ]);
     }
     public function importCsv(Request $request)
