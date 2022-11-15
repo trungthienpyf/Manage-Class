@@ -31,6 +31,7 @@ Route::get('/', [AccountController::class, 'viewLogin'])->name('login');
 Route::get('/test', [TestController::class, 'test'])->name('login');
 Route::get('/login', [AccountController::class, 'viewLogin'])->name('login');
 Route::get('/register', [AccountController::class, 'viewRegister'])->name('register');
+Route::get('/signup', [AccountController::class, 'signup'])->name('signup');
 Route::post('/signin', [AccountController::class, 'login'])->name('signin');
 Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
 Route::middleware(['auth','role:2'])->group(function () {

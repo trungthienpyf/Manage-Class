@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\StoreStudentRequest;
 use App\Models\Student;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
@@ -28,6 +29,12 @@ class AccountController extends Controller
             return redirect()->route('admin');
         }
         return view('register');
+    }
+    public function  signup(StoreStudentRequest $request){
+      $student=  Student::create($request->all());
+        Auth::guard('student')->login($student);
+        return redirect()->route('student');
+
     }
     public function login(Request $request)
     {

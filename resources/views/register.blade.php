@@ -31,43 +31,36 @@
 
                 <!-- title-->
                 <h4 class="mt-0">Đăng ký tài khoản</h4>
-                <p class="text-muted mb-4">Bạn không có tài khoản? Tạo tài khoản của bạn, chỉ mất chưa đầy một phút</p>
+                <p class="text-muted mb-4">Bạn không có tài khoản? Tạo tài khoản của bạn, chỉ mất chưa đầy một phút.</p>
+                @if ($errors->any())
 
+
+                        @foreach ($errors->all() as $error)
+                            <p style="color: red">{{ $error }}</p>
+                        @endforeach
+
+
+                @endif
                 <!-- form -->
-                <form action="#">
+                <form action="{{route('signup')}}">
                     <div class="form-group">
-                        <label for="fullname">Họ tên</label>
-                        <input class="form-control" type="text" id="fullname" placeholder="Enter your name" required="">
+                        <label for="name">Họ tên</label>
+                        <input class="form-control" type="text" id="name" name="name" placeholder="Nhập họ tên" value="{{{old('name')}}}" >
                     </div>
                     <div class="form-group">
-                        <label for="emailaddress">Email address</label>
-                        <input class="form-control" type="email" id="emailaddress" required="" placeholder="Enter your email">
+                        <label for="email">Email</label>
+                        <input class="form-control" type="email" id="email"  name="email" placeholder="Nhập email" value="{{{old('email')}}}">
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
-                        <input class="form-control" type="password" required="" id="password" placeholder="Enter your password">
+                        <label for="password">Mật khẩu</label>
+                        <input class="form-control" type="password"  name="password" id="password" placeholder="Nhập password" value="{{{old('password')}}}">
                     </div>
-
                     <div class="form-group mb-0 text-center">
                         <button class="btn btn-primary btn-block" type="submit"><i class="mdi mdi-account-circle"></i> Đăng ký </button>
                     </div>
                     <!-- social-->
                     <div class="text-center mt-4">
-{{--                        <p class="text-muted font-16">Đăng nhập bằng</p>--}}
-{{--                        <ul class="social-list list-inline mt-3">--}}
-{{--                            <li class="list-inline-item">--}}
-{{--                                <a href="javascript: void(0);" class="social-list-item border-primary text-primary"><i class="mdi mdi-facebook"></i></a>--}}
-{{--                            </li>--}}
-{{--                            <li class="list-inline-item">--}}
-{{--                                <a href="javascript: void(0);" class="social-list-item border-danger text-danger"><i class="mdi mdi-google"></i></a>--}}
-{{--                            </li>--}}
-{{--                            <li class="list-inline-item">--}}
-{{--                                <a href="javascript: void(0);" class="social-list-item border-info text-info"><i class="mdi mdi-twitter"></i></a>--}}
-{{--                            </li>--}}
-{{--                            <li class="list-inline-item">--}}
-{{--                                <a href="javascript: void(0);" class="social-list-item border-secondary text-secondary"><i class="mdi mdi-github-circle"></i></a>--}}
-{{--                            </li>--}}
-{{--                        </ul>--}}
+
                     </div>
                 </form>
                 <!-- end form-->
