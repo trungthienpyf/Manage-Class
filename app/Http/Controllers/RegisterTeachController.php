@@ -99,10 +99,11 @@ class RegisterTeachController extends Controller
      * Remove the specified resource from storage.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
-        //
+        RegisterTeach::find($id)->delete();
+        return redirect()->route('teacher.register.index');
     }
 }

@@ -32,7 +32,7 @@
 
 
 
-                    <label for="csv" class="btn btn-light mb-2 mr-1">Import</label>
+
 
 
                 </div>
@@ -71,7 +71,13 @@
 
                         {{--                  <button type="button" class="btn btn-success mb-2 mr-1"></i></button>--}}
                         @if(empty($each->classSchedule_id))
-                        <a href="" class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></a>
+
+                            <form action="{{route('teacher.register.destroy',$each)}}" class="m-0 p-0" method="post">
+                                @method('DELETE')
+                                @csrf
+
+                                <button  class="btn btn-danger btn-sm"><i class=" mdi mdi-delete-alert"></i></button>
+                            </form>
                             @endif
                     </td>
                 </tr>

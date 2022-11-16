@@ -16,7 +16,7 @@
         @if(is_null(auth()->user()->level))
 
             <li class="side-nav-item">
-                <a href="#" class="side-nav-link">
+                <a href="{{route('post')}}" class="side-nav-link">
                     <i class="uil-home-alt"></i>
                     <span> Trang chủ </span>
                 </a>
@@ -80,7 +80,7 @@
 
             @elseif(auth()->user()->level == 1)
                 <li class="side-nav-item">
-                    <a href="{{route('teacher')}}" class="side-nav-link">
+                    <a href="{{route('teacher.post')}}" class="side-nav-link">
                         <i class="uil-home-alt"></i>
                         <span> Trang chủ </span>
                     </a>

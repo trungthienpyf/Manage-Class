@@ -25,7 +25,6 @@ class TestController extends Controller
 return RegisterTeach::query()
     ->where('weekdays', 1)
     ->where('shift', 1)
-
     ->get();
 
 

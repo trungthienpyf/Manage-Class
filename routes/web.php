@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ClassOfMineController;
 use App\Http\Controllers\ClassScheduleController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\RegisterTeachController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\ScheduleTeacherController;
@@ -35,10 +36,10 @@ Route::get('/signup', [AccountController::class, 'signup'])->name('signup');
 Route::post('/signin', [AccountController::class, 'login'])->name('signin');
 Route::get('/logout', [AccountController::class, 'logout'])->name('logout');
 Route::middleware(['auth','role:2'])->group(function () {
-    Route::get('/admin', function () {
-        View::share('title', 'Admin');
-        return view('index');
-    })->name('admin');
+    Route::get('/admin', [PostController::class,'index'])->name('admin');
+    Route::post('/admin', [PostController::class,'store'])->name('admin.post');
+    Route::delete('/destroy/{post}', [PostController::class,'destroy'])->name('admin.post.destroy');
+
     Route::name("admin.")->prefix('admin')->group(function () {
         Route::resources([
             'class' => ClassScheduleController::class,
@@ -65,7 +66,10 @@ Route::middleware(['auth','role:1'])->group(function () {
     Route::name("teacher.")->prefix('teacher')->group(function () {
         Route::get('/schedule',[ScheduleTeacherController::class, 'index'])->name('schedule');
         Route::get('/attendance',[AttendanceController::class, 'index'])->name('attendance');
+        Route::get('/post',[PostController::class, 'indexTeacher'])->name('post');
+
         Route::get('/classTeacher',[ClassOfMineController::class, 'indexTeacher'])->name('classTeacher');
+
         Route::post('/getAttendanceClass',[AttendanceController::class, 'getAttendanceClass'])->name('getAttendanceClass');
         Route::post('/attendance',[AttendanceController::class, 'attendance'])->name('attendanceStudent');
         Route::resources([
@@ -77,6 +81,7 @@ Route::middleware(['auth','role:1'])->group(function () {
 
 Route::middleware(['auth:student'])->group(function () {
     Route::get('/student', [StudentController::class,'index'])->name('student');
+    Route::get('/post', [PostController::class,'indexStudent'])->name('post');
     Route::get('/student/calendar', [StudentController::class,'viewCalendar'])->name('viewCalendar');
     Route::get('/classStudent',[ClassOfMineController::class, 'indexStudent'])->name('classStudent');
     Route::get('/progress/{progress}', [StudentController::class,'progress'])->name('progress')->middleware(PreventRouteMiddleware::class);

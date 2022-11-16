@@ -28,7 +28,7 @@
                     <div class="col-sm-6">
                         <div class="d-flex justify-content-between">
                             <div>
-                                Ngày khai giảng {{$schedule->time_start_expected}}
+                                Ngày khai giảng {{$schedule->time_start_real}}
                             </div>
                             <div>
                                 <ul class="list-inline font-13 text-right">
