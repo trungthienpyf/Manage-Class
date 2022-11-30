@@ -49,18 +49,16 @@ class ClassScheduleImport implements ToArray, WithHeadingRow
             if($subject==null){
                 throw new \Exception("Không tìm thấy môn học");
             }
-            $classSchedule = ClassSchedule::query()->where('subject_id',$subject->id)
+
+
+                $classSchedule = ClassSchedule::query()->where('subject_id',$subject->id)
                 ->where('status',0)
                 ->where('shift',ShiftClassEnum::getShiftEnum($shift))
                 ->where('weekdays',WeekdaysClassEnum::getValueWeekdaysEnum($weekdays))
                 ->where('time_line',TimeLineEnum::getValueTimeLineEnum($time_line))
                 ->first();
-            $checkExist=ClassStudent::query()->where('classSchedule_id',$classSchedule->id)
-                ->where('student_id',$student->id)
-                ->first();
-            if($checkExist){
-                throw new \Exception("Học viên đã tồn tại trong lớp cần học");
-            }
+
+
             if($classSchedule==null){
                 $time_start= date("Y-m-d", strtotime(" +3 week"));
 
@@ -84,6 +82,12 @@ class ClassScheduleImport implements ToArray, WithHeadingRow
                 ]);
 
             }
+            $checkExist=ClassStudent::query()->where('classSchedule_id',$classSchedule->id)
+                    ->where('student_id',$student->id)
+                    ->first();
+                if($checkExist){
+                    throw new \Exception("Học viên đã tồn tại trong lớp cần học");
+                }
             $classSchedule->students()->attach($student->id);
             }
         }catch(\Exception $e){
