@@ -14,5 +14,5 @@ class AttendanceStudent extends Model
         'status',
     ];
     public $timestamps=false;
-
+  // protected $primaryKey = ['attendance_id', 'student_id'];
 }

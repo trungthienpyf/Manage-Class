@@ -20,13 +20,16 @@ use Illuminate\Support\Facades\Mail;
 
 class TestController extends Controller
 {
-    public function test()
-    {
-return RegisterTeach::query()
-    ->where('weekdays', 1)
-    ->where('shift', 1)
-    ->get();
-
-
-    }
+//    public function test()
+//    {
+//return RegisterTeach::query()
+//    ->where('weekdays', 1)
+//    ->where('shift', 1)
+//    ->get();
+//
+//
+//    }
+public function test(){
+    dd(auth()->user()->id);
+}
 }

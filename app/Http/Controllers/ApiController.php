@@ -10,6 +10,7 @@ use App\Models\ClassSchedule;
 use App\Models\ClassStudent;
 use App\Models\RegisterTeach;
 use App\Models\Room;
+use App\Models\Student;
 use App\Models\Teacher;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,58 @@ use Illuminate\Support\Facades\Auth;
 
 class ApiController extends Controller
 {
+    public function getListStudentByIdClass(Request $request){
+        return Student::query()->whereHas('classSchedules',function ($q) use($request){
+            $q->where('id',$request->id);
+        })->get();
+
+    }
+    public function AttendanceAi(Request $request){
+
+        return Attendance::query()->where('classSchedule_id',$request->id)
+            ->where('date',$request->date)
+            ->whereHas('AttendanceStudents',function ($q) use($request){
+                $q->where('student_id',$request->student_id);
+                $q->where('attendance_id',$request->attendance_id);
+                $q->where('status','=',1);
+        })
+            ->first();
+
+    }
+    public function CreateAttendance(Request $request){
+
+        if(Attendance::query()->where('classSchedule_id',$request->id)->where('date',$request->date)->first()==null){
+
+            Attendance::create([
+                'classSchedule_id'=>$request->id,
+                'teacher_id'=>$request->teacher_id,
+                'date'=>$request->date,
+            ]);
+        }
+    }
+    public function AttendanceStudentAi(Request $request){
+
+        $class_attend= Attendance::query()->where('classSchedule_id',$request->id)
+            ->where('date',$request->date)
+            ->get()
+            ->first();
+     $check=   AttendanceStudent::query()->where('attendance_id',$class_attend->id)->where('student_id',$request->student_id);
+        if($check->get()->first()==null ){
+
+            $attend_stu = Attendance::find($class_attend->id);
+
+            $attend_stu->AttendanceStudents()->attach($request->student_id,[
+                'status'=>1
+            ]);
+        }else{
+           $check->update([
+               'status'=>1
+           ]);
+        }
+
+
+
+    }
     public function getSchedule(Request $request)
     {
 

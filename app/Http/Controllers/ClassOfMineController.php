@@ -8,6 +8,7 @@ use App\Http\Controllers\ApiController;
 use App\Enums\WeekdaysClassEnum;
 
 use App\Models\ClassSchedule;
+use App\Models\Student;
 
 class ClassOfMineController extends Controller
 {
@@ -39,6 +40,13 @@ class ClassOfMineController extends Controller
         return view('teacher.class_teacher', [
             'schedules' => $schedules,
             'dateCloset'    => $arr,
+        ]);
+    }
+    public function registerImage(){
+        View()->share('title', 'Đăng ký ảnh điểm danh');
+
+        return view('student.upload_image', [
+            'student'=>Student::query()->where("id",auth()->user()->id)->first()
         ]);
     }
     public function indexStudent()

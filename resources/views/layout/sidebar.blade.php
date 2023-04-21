@@ -41,6 +41,12 @@
                     <span> Lớp học </span>
                 </a>
             </li>
+            <li class="side-nav-item">
+                <a href="{{route('registerImage')}}" class="side-nav-link">
+                    <i class="uil-calender"></i>
+                    <span> Đăng ký ảnh </span>
+                </a>
+            </li>
         @else
             @if(auth()->user()->level == 2)
                 <li class="side-nav-item">
@@ -110,6 +116,7 @@
                         <span> Đăng ký lịch dạy </span>
                     </a>
                 </li>
+
             @endif
         @endif
 

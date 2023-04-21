@@ -21,7 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/getSchedule', [ApiController::class,'getSchedule'])->name('getSchedule');
+Route::get('/getListStudentByIdClass', [ApiController::class,'getListStudentByIdClass'])->name('getListStudentByIdClass');
 Route::get('/getScheduleTeacher', [ApiController::class,'getScheduleTeacher'])->name('getScheduleTeacher');
+Route::get('/AttendanceAi', [ApiController::class,'AttendanceAi'])->name('AttendanceAi');
+Route::get('/AttendanceStudentAi', [ApiController::class,'AttendanceStudentAi'])->name('AttendanceStudentAi');
+Route::get('/CreateAttendance', [ApiController::class,'CreateAttendance'])->name('CreateAttendance');
 Route::post('/getWeekdays', [ApiController::class,'getWeekdays'])->name('getWeekdays');
 Route::post('/getTeachers', [ApiController::class,'getTeachers'])->name('getTeachers');
 Route::post('/updateTeacher', [ApiController::class,'updateTeacher'])->name('updateTeacher');

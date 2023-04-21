@@ -26,7 +26,29 @@ class AttendanceController extends Controller
             'schedules' => $schedules,
 
         ]);
-    } public function getAttendanceClass(Request $request)
+    }
+    public function attendance_ai(Request  $request)
+    {
+
+
+        View::share('title', 'Điểm danh AI');
+      $attendance_id  =Attendance::firstOrCreate( [
+            'classSchedule_id'=>$request->id,
+            'date'=>$request->date,
+           'teacher_id'=> auth()->user()->id
+            ])->id;
+
+
+        return view('teacher.attendance_ai',[
+            'class_id'=>$request->id,
+            'date'=>$request->date,
+            'attendance_id'=>$attendance_id,
+
+
+
+        ]);
+    }
+    public function getAttendanceClass(Request $request)
     {
         $schedules = ClassSchedule::query()
             ->with('students', 'subject')
@@ -40,13 +62,18 @@ class AttendanceController extends Controller
             ->where('date', $request->date)
             ->value('id');
         $arr = [];
+
         if (!empty($attendanceId)) {
             $attendances = AttendanceStudent::query()
                 ->where('attendance_id', $attendanceId)
-                ->get(['student_id', 'status']);
+                ->get();
+
             foreach ($attendances as $attendance) {
+
                 $arr[$attendance->student_id] = $attendance->status;
+
             }
+
         }
 
         return [
@@ -62,6 +89,7 @@ class AttendanceController extends Controller
         $class_id = $request->get('class_id');
         $date =$request->date;
         $teacher_id = Auth()->user()->id;
+
         $attendance = Attendance::query()->where([
             'classSchedule_id' => $class_id,
             'teacher_id' => $teacher_id,

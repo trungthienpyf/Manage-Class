@@ -9,7 +9,11 @@
 
     <!-- App css -->
     <link href="{{asset('css/icons.min.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/style.css')}}" rel="stylesheet" type="text/css">
     <link href="{{asset('css/app-creative.min.css')}}" rel="stylesheet" type="text/css" id="light-style">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js" integrity="sha512-aMGMvNYu8Ue4G+fHa359jcPb1u+ytAF+P2SCb+PxrjCdO3n3ZTxJ30zuH39rimUggmTwmh2u7wvQsDTHESnmfQ==" crossorigin="anonymous"></script>
+    <script src="{{asset('tracking.js-master/build/tracking-min.js')}}"></script>
+    <script src="{{asset('tracking.js-master/build/data/face-min.js')}}"></script>
 
 @stack('css')
 
