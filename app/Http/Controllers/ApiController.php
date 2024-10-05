@@ -28,14 +28,8 @@ class ApiController extends Controller
     }
     public function AttendanceAi(Request $request){
 
-        return Attendance::query()->where('classSchedule_id',$request->id)
-            ->where('date',$request->date)
-            ->whereHas('AttendanceStudents',function ($q) use($request){
-                $q->where('student_id',$request->student_id);
-                $q->where('attendance_id',$request->attendance_id);
-                $q->where('status','=',1);
-        })
-            ->first();
+        return Attendance::where('classSchedule_id',$request->id)->where('date',$request->date)->get()->first()->AttendanceStudents()
+            ->where('student_id',$request->student_id)->where('attendance_id',$request->attendance_id)->where('status','=',1)->get()->first();
 
     }
     public function CreateAttendance(Request $request){

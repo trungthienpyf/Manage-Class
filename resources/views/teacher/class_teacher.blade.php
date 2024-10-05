@@ -14,35 +14,50 @@
     <div class="card">
 
         <div class="card-body">
+            <div class="row">
+
 
             @foreach($schedules as $schedule)
-                <div class="row justify-content-sm-between ">
-                    <div class="col-sm-6 mb-2 mb-sm-0">
-                        <div class="custom-control ">
 
+                <div class="col-md-6 col-xl-3">
+                    <!-- project card -->
+                    <div class="card d-block">
+                        <img class="card-img-top" src="{{asset('img/project-1.jpg')}}" alt="project image cap">
+                        <div class="card-body ">
 
-                            # {{$schedule->id}} - Lớp {{$schedule->subject->name}}
+                            <!-- project title-->
+                            <h4 class="mt-0">
+                                <a  class="text-title">  # {{$schedule->id}} - Lớp {{$schedule->subject->name}}</a>
+                            </h4>
+                            {{--                    <p class="text-muted font-17 mb-3">Chương trình tích hợp nhiều level để học viên chọn học</a>--}}
+                            </p>
+                            <!-- project detail-->
+                            <p class="mb-1">
+                                Ngày khai giảng: <span class="pr-2 text-nowrap mb-2 d-inline-block">
+                                                {{$schedule->time_start_real}}
+                                            </span>
 
-                        </div> <!-- end checkbox -->
-                    </div> <!-- end col -->
-                    <div class="col-sm-6">
-                        <div class="d-flex justify-content-between">
-                            <div>
-                                Ngày khai giảng {{$schedule->time_start_real}}
+                                <span class="text-nowrap mb-2 d-inline-block">
+                           <b class="font-16"> {!! $dateCloset[$schedule->id] ? 'Ngày dạy tiếp theo:<br> '. $dateCloset[$schedule->id] : 'Lịch dạy đã kết thúc <br><span style="color:white">0</span>' !!}</b>
+                        </span>
+
+                            </p>
+
+                            <div class=" d-flex justify-content-end">
+                                <a href="{{route('teacher.quizz.indexByClass',$schedule->id)}}">
+                                    <button class="btn btn-primary">Quản lý bài tập</button>
+                                </a>
                             </div>
-                            <div>
-                                <ul class="list-inline font-13 text-right">
-                                    <li class="list-inline-item">
-                                       <b class="font-16"> {{  $dateCloset[$schedule->id] ? 'Ngày dạy tiếp theo: '. $dateCloset[$schedule->id] : 'Lịch dạy đã kết thúc'  }}</b>
-                                        <i class="uil uil-schedule font-16 mr-1"></i>
-                                    </li>
+                        </div> <!-- end card-body-->
 
-                                </ul>
-                            </div>
-                        </div> <!-- end .d-flex-->
-                    </div> <!-- end col -->
-                </div>
+                    </div> <!-- end card-->
+                </div> <!-- end col -->
+
+                <!-- end col -->
+                <!-- end col -->
+                <!-- end col -->
             @endforeach
+            </div>
         </div>
     </div>
 

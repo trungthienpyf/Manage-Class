@@ -22,6 +22,12 @@ class ClassScheduleController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
+   public function statistic(){
+       View::share('title', 'Thống kê');
+       return view('admin.statistic.index');
+   }
+
+
     public function index(Request $request)
     {
         View::share('title', 'Lớp học');

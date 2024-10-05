@@ -12,7 +12,10 @@ class Student extends Model implements Authenticatable
     use \Illuminate\Auth\Authenticatable;
     public $table = "students";
     use HasFactory;
-    protected $fillable=['name','password','phone','email','img'];
+    protected $fillable=['name','password','phone','email','img',
+        'social_id',
+        'social_type'
+    ];
     public function classSchedules() {
         return $this->belongsToMany(ClassSchedule::class, 'class_students', 'student_id', 'classSchedule_id');
     }

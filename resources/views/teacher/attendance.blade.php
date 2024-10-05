@@ -27,7 +27,8 @@
                                aria-controls="todayTasks">
                                 <div class="m-0 pb-2">
                                     <i class="uil uil-angle-down font-18"></i>{{$schedule->subject->name}} <span
-                                        class="text-muted"> Ngày khai giảng {{$schedule->time_start_real}} - {{$schedule->name_weekday}} - Buổi <span id="shiftRedirect{{$schedule->id}}">{{$schedule->name_shift}}</span>  </span>
+                                        class="text-muted"> Ngày khai giảng {{$schedule->time_start_real}} - {{$schedule->name_weekday}} - Buổi <span
+                                            id="shiftRedirect{{$schedule->id}}">{{$schedule->name_shift}}</span>  </span>
                                 </div>
                             </a>
                             <div class="collapse " id="todayTasks{{$schedule->id}}">
@@ -47,7 +48,8 @@
                                             </div>
                                             <div class="col-8">
                                                 <div style="text-align: center;margin-top: 36px;">
-                                                    <a id="linkAttendanceAI{{$schedule->id}}"  href="{{route('teacher.attendance_ai')}}"> Điểm danh camera</a>
+                                                    <a id="linkAttendanceAI{{$schedule->id}}"
+                                                       href="{{route('teacher.attendance_ai')}}"> Điểm danh camera</a>
                                                 </div>
                                             </div>
 
@@ -110,15 +112,15 @@
                     $(".spinner-border").removeClass('d-flex');
                     $(".card-body" + id).removeClass('d-none');
 
-                        if (response[1].length != 0) {
-                            $("#buttonAttendance"+id).text("Cập nhật điểm danh");
-                        } else {
+                    if (response[1].length != 0) {
+                        $("#buttonAttendance" + id).text("Cập nhật điểm danh");
+                    } else {
 
-                                $("#buttonAttendance"+id).text("Điểm danh");
+                        $("#buttonAttendance" + id).text("Điểm danh");
 
 
-                        }
-                        console.log(response)
+                    }
+                    console.log(response)
                     $('#body' + id).empty()
                     console.log(id)
                     response[0][0].students.forEach(function (student) {
@@ -129,30 +131,32 @@
                                                     <td>
                                                         <div>
                                                             <div class="custom-control custom-radio">
-                                                                <input type="radio" checked id="${student.id+id}"
+                                                                <input type="radio" checked id="${student.id + id} a"
                                                                        name="status[${student.id}]"
-                                                                        ${response[1][`${student.id}`] == 1 ? "checked" : ""}
-                                                                       value="1" class="custom-control-input on-school">
-                                                                <label class="custom-control-label "
-                                                                       for="${student.id+id}">Đi
-                                                                    học</label>
-                                                            </div>
-                                                            <div class="custom-control custom-radio">
-                                                                <input type="radio" id="${student.id+id} a"
-                                                                       name="status[${student.id}]"
-                                                        ${response[1][`${student.id}`] == 2 ? "checked" : ""}
+                                                        ${response[1][`${student.id}`] != 2 ? "" : "checked"}
                                                                        value="2" class="custom-control-input">
                                                                 <label class="custom-control-label"
-                                                                       for="${student.id+id} a">Nghĩ học</label>
+                                                                       for="${student.id + id} a">Nghĩ học</label>
                                                             </div>
                                                             <div class="custom-control custom-radio">
-                                                                <input type="radio" id="${student.id+id} b"
+                                                                <input type="radio"  id="${student.id + id} b"
                                                                        name="status[${student.id}]"
-                                                                    ${response[1][`${student.id}`] == 3 ? "checked" : ""}
+                                                                    ${response[1][`${student.id}`] != 3 ? "" : "checked"}
                                                                        value="3" class="custom-control-input">
                                                                 <label class="custom-control-label"
-                                                                       for="${student.id+id} b">Nghĩ có phép</label>
+                                                                       for="${student.id + id} b">Nghĩ có phép</label>
                                                             </div>
+                                                            <div class="custom-control custom-radio">
+                                                                <input type="radio"  id="${student.id + id}"
+                                                                       name="status[${student.id}]"
+                                                                        ${response[1][`${student.id}`] != 1 ? "" : "checked"}
+                                                                       value="1" class="custom-control-input on-school">
+                                                                <label class="custom-control-label "
+                                                                       for="${student.id + id}">Đi
+                                                                    học</label>
+                                                            </div>
+
+
                                                         </div>
                                                     </td>
                                                 </tr>`)
@@ -167,16 +171,15 @@
 
             updateSchedule(date, id)
 
-            let router= $("#linkAttendanceAI" + id).attr("href")
+            let router = $("#linkAttendanceAI" + id).attr("href")
             var searchStr = /date=[^&]+/;
-            var newLink = router.replace(searchStr, "date="+date);
+            var newLink = router.replace(searchStr, "date=" + date);
             // if(date!=new Date()){
             //     $("#linkAttendanceAI" + id).attr("href",'')
             //     $("#linkAttendanceAI" + id).css('color','#ccc').css('cursor','not-allowed')
             // }
             $("#linkAttendanceAI" + id).attr("href", newLink)
         }
-
 
 
         async function pushID(id) {
@@ -247,6 +250,7 @@
             $("#linkAttendanceAI" + id).attr("href", link)
 
         }
+
         function submitForm(id, event) {
 
 
@@ -279,14 +283,13 @@
                             icon: 'success',
                             position: 'top-right',
                         })
-                        $("#buttonAttendance"+id).text("Cập nhật điểm danh");
-                        let valueAttr = $("#optionSelected" + date+id).text();
+                        $("#buttonAttendance" + id).text("Cập nhật điểm danh");
+                        let valueAttr = $("#optionSelected" + date + id).text();
 
-                        let str= valueAttr.split('C')
+                        let str = valueAttr.split('C')
 
 
-
-                        $("#optionSelected" + date+id).text(str[0])
+                        $("#optionSelected" + date + id).text(str[0])
                     }
 
 

@@ -35,6 +35,7 @@ class ClassScheduleImport implements ToArray, WithHeadingRow
             $shift = $each["ca"];
             $weekdays = $each["ngay_hoc"];
             $time_line = $each["tuan_hoc"];
+
             $student=Student::query()->where('email',$email)->first();
             if(!$student){
                 $student= Student::create([
@@ -46,6 +47,7 @@ class ClassScheduleImport implements ToArray, WithHeadingRow
             }
 
             $subject= Subject::query()->where('name',$subjectName)->first();
+            echo $subject;
             if($subject==null){
                 throw new \Exception("Không tìm thấy môn học");
             }

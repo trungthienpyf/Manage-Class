@@ -20,7 +20,7 @@ final class WeekdaysClassEnum extends Enum
     const T2T4T6 = 7;
     const T3T5T7 = 8;
 
-    public function getArrayExcept($value)
+    public static function getArrayExcept($value)
     {
         if ($value == 1) {
             return [1, 2, 4, 6];
@@ -41,7 +41,7 @@ final class WeekdaysClassEnum extends Enum
         }
     }
 
-    public function getViewArray()
+    public static function getViewArray()
     {
         return [
             "Thứ 2-5" => self::T2T5,

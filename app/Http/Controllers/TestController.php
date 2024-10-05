@@ -29,7 +29,9 @@ class TestController extends Controller
 //
 //
 //    }
-public function test(){
-    dd(auth()->user()->id);
-}
+    public function test()
+    {
+         return    Attendance::where('classSchedule_id',6)->where('date',"2022-12-13")->get()->first()->AttendanceStudents()->where('student_id',18)->where('attendance_id',23)->where('status','=',1)->get()->first();
+
+    }
 }

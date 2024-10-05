@@ -76,6 +76,7 @@
                         <span> Quản lý Phòng </span>
                     </a>
                 </li>
+
                 <li class="side-nav-item">
                     <a href="{{route('admin.subject.index')}}" class="side-nav-link">
                         <i class="uil-calender"></i>
@@ -83,7 +84,20 @@
                         </span>
                     </a>
                 </li>
-
+                <li class="side-nav-item">
+                    <a href="{{route('admin.subject.index')}}" class="side-nav-link">
+                        <i class="uil-calender"></i>
+                        <span> Quản lý Học phí
+                        </span>
+                    </a>
+                </li>
+                <li class="side-nav-item">
+                    <a href="{{route('admin.statistic')}}" class="side-nav-link">
+                        <i class="uil-calender"></i>
+                        <span> Thống kê
+                        </span>
+                    </a>
+                </li>
             @elseif(auth()->user()->level == 1)
                 <li class="side-nav-item">
                     <a href="{{route('teacher.post')}}" class="side-nav-link">
@@ -110,6 +124,7 @@
                         <span> Điểm danh </span>
                     </a>
                 </li>
+
                 <li class="side-nav-item">
                     <a href="{{route('teacher.register.index')}}" class="side-nav-link">
                         <i class="uil-calender"></i>

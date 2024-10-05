@@ -8,18 +8,63 @@ use App\Mail\RegisterClass;
 use App\Models\ClassSchedule;
 use App\Models\ClassStudent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
+
 
 class StudentController extends Controller
 {
+
+    public function image()
+    {
+        return view('student.image');
+    }
+    public function delete(){
+        $files = File::files('images/' . auth()->user()->id);
+        // Xóa từng tệp tin trong danh sách
+        foreach ($files as $file) {
+            File::delete($file);
+        }
+    }
+    public function upload(Request $request)
+    {
+
+        if ($request->has('image')) {
+            $encodedImage = $request->input('image');
+            $image = base64_decode($encodedImage);
+            $destinationPath = 'images/' . auth()->user()->id;
+            $directoryPath = public_path($destinationPath);
+
+            if (!file_exists($directoryPath)) {
+                mkdir($directoryPath, 0777, true);
+// Tạo tên tệp tin duy nhất cho ảnh
+
+
+            }
+        }
+
+
+        $fileName = uniqid() . '.jpg';
+
+// Đường dẫn đến tệp tin ảnh
+        $imagePath = $directoryPath . '/' . $fileName;
+
+// Lưu dữ liệu ảnh vào tệp tin
+        file_put_contents($imagePath, $image);
+//        $image->storeAs('public/images/'.auth()->user()->id, time());
+
+        return response()->json(['message' => 'Image uploaded successfully.']);
+    }
+
     public function index()
     {
         View::share('title', 'Chương trình học');
         $classes = ClassSchedule::query()
             ->with('subject')
             ->whereDoesntHave('students', function ($query) {
-                $query->where('student_id',auth()->user()->id);
+                $query->where('student_id', auth()->user()->id);
             })
             ->where('status', 0)
             ->get();
@@ -44,44 +89,44 @@ class StudentController extends Controller
         View()->share('title', 'Cảm ơn');
         $msg = "";
 
-        $id=explode("=", $request->extraData)[1];
+        $id = explode("=", $request->extraData)[1];
 
 
         if ($request->resultCode == 0) {
 
-            $checkClass= ClassStudent::query()->where('classSchedule_id',$id)->where('student_id',auth()->user()->id)->first();
+            $checkClass = ClassStudent::query()->where('classSchedule_id', $id)->where('student_id', auth()->user()->id)->first();
 
-            if($checkClass){
+            if ($checkClass) {
                 $msg = "Thanh toán qua QR MoMo - Giao dịch thành công.";
                 return view('student.thank', compact('msg'));
             }
 
-            $payment=$request->orderType;
+            $payment = $request->orderType;
 
             ClassStudent::create([
                 'classSchedule_id' => $id,
                 'student_id' => auth()->user()->id,
                 'status' => 0,
                 'payment' => $payment,
+                'date' => date('Y-m-d'),
+                'money' => 300000,
             ]);
-            if(auth()->user()->email){
+            if (auth()->user()->email) {
 
-               $classQuery= ClassSchedule::query()->where('id',$id)
-
+                $classQuery = ClassSchedule::query()->where('id', $id)
                     ->with('subject')
-                    ->first(['id','time_start','shift','subject_id']);
-              $shift= ShiftClassEnum::getShift($classQuery->shift);
+                    ->first(['id', 'time_start', 'shift', 'subject_id']);
+                $shift = ShiftClassEnum::getShift($classQuery->shift);
                 $details = [
-                    'name'=>$classQuery->subject->name,
-                    'shift'=> $shift,
-                    'time_start' =>  date("d-m-Y", strtotime($classQuery->time_start)),
+                    'name' => $classQuery->subject->name,
+                    'shift' => $shift,
+                    'time_start' => date("d-m-Y", strtotime($classQuery->time_start)),
                     'price' => $classQuery->subject->price,
 
                 ];
 
                 Mail::to(auth()->user()->email)->send(new RegisterClass($details));
             }
-
 
 
             $msg = $request->orderInfo . " - " . $request->message;
@@ -106,8 +151,7 @@ class StudentController extends Controller
         $orderId = time() . "";
         $redirectUrl = route('resultPayment');
         $ipnUrl = route('resultPayment');
-        $extraData = "id=".$request->id_class;
-
+        $extraData = "id=" . $request->id_class;
 
 
         $requestId = time() . "";

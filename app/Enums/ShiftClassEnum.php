@@ -45,7 +45,7 @@ final class ShiftClassEnum extends Enum
                 break;
         }
     }
-    public function getTimeOfShiftReturn($value)
+    public static function getTimeOfShiftReturn($value)
     {
        if($value == 'Sáng') {
            return '07:30:00';
@@ -55,7 +55,7 @@ final class ShiftClassEnum extends Enum
            return '18:00:00';
        }
     }
-    public function getTimeOfShift($value)
+    public static function getTimeOfShift($value)
     {
         switch ($value) {
             case 1:

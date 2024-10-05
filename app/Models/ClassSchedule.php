@@ -52,7 +52,10 @@ class ClassSchedule extends Model
         }
         return "Đã học: " . $num . " Vắng: " . $num2 . " Vắng phép: " . $num3;
     }
-
+    public function lesstures()
+    {
+        return $this->belongsToMany(Lessture::class, 'class_lesstures', 'classSchedule_id', 'lessture_id');
+    }
     public function students()
     {
         return $this->belongsToMany(Student::class, 'class_students', 'classSchedule_id', 'student_id')->withPivot('status');

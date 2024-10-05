@@ -134,7 +134,7 @@
 
                         // Giải phóng bộ nhớ của Mat
                         frame.delete();
-                    }, 1000); // Thực hiện gửi dữ liệu 30 lần mỗi giây
+                    }, 500); // Thực hiện gửi dữ liệu 30 lần mỗi giây
                 })
                 .catch(function(err) {
                     console.log(err);
@@ -210,7 +210,7 @@
                         }
                         if(counter<=10){
                             $(".marked").html("")
-                            $(".button.center").html(`Phải mày không`)
+                            $(".button.center").html(`Loading....`)
 
                         }
 

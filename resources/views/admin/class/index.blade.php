@@ -39,24 +39,28 @@
                     <label for="csv" class="btn btn-light mb-2 mr-1">Import</label>
 
 
+                    <label for="export" id="export" class="btn btn-primary mb-2 mr-1">Export</label>
+
+
                 </div>
+
             </div>
         </div>
         <form action="{{route('admin.class.index')}}" id="search">
-        <div class="row">
+            <div class="row">
 
 
+                <div class="col-sm-2 pb-2">
 
-            <div class="col-sm-2 pb-2">
-
-                <select name="teacher" id="teacherSearch" class="form-control select2" data-toggle="select2">
-                    <option value="">Giảng viên</option>
-                    @foreach($teachers as $teacher)
-                        <option value="{{$teacher->id}}" {{ request()->teacher==$teacher->id ? 'selected':''}}>{{$teacher->name}}</option>
+                    <select name="teacher" id="teacherSearch" class="form-control select2" data-toggle="select2">
+                        <option value="">Giảng viên</option>
+                        @foreach($teachers as $teacher)
+                            <option
+                                value="{{$teacher->id}}" {{ request()->teacher==$teacher->id ? 'selected':''}}>{{$teacher->name}}</option>
                         @endforeach
-                </select>
-            </div>
-            <div class="col-sm-2">
+                    </select>
+                </div>
+                <div class="col-sm-2">
                     <select name="time" id="timeSearch" class="form-control select2" data-toggle="select2">
                         <option value=""> Thời gian</option>
                         <option value="1" {{ request()->time===1? 'selected':''}}>Chưa khai giảng</option>
@@ -64,9 +68,9 @@
                         <option value="3" {{ request()->time==3? 'selected':''}}>Đã hoàn thành</option>
                     </select>
 
-            </div>
+                </div>
 
-        </div>
+            </div>
         </form>
         <div class="row">
             <div class="col-12">
@@ -75,7 +79,7 @@
                 @endif
             </div>
         </div>
-        <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+        <table id="basic-datatable" class="table dt-responsive nowrap w-100 ">
             <thead>
             <tr>
                 <th>#</th>
@@ -160,21 +164,21 @@
                     <td class="d-flex">
 
 
-                        <form  method="post">
+                        <form method="post">
                             @method('put')
                             @csrf
-                            <button  class="btn btn-primary btn-sm">
+                            <button class="btn btn-primary btn-sm">
                                 <i class=" mdi mdi-square-edit-outline"></i>
                             </button>
                         </form>
 
-                            <form action="{{route('admin.class.destroy',$class->id)}}" method="post">
-                                @method('delete')
-                                @csrf
-                                <button  class="btn btn-danger btn-sm">
-                                    <i class=" mdi mdi-delete-alert"></i>
-                                </button>
-                            </form>
+                        <form action="{{route('admin.class.destroy',$class->id)}}" method="post">
+                            @method('delete')
+                            @csrf
+                            <button class="btn btn-danger btn-sm">
+                                <i class=" mdi mdi-delete-alert"></i>
+                            </button>
+                        </form>
                     </td>
                 </tr>
             @endforeach
@@ -193,17 +197,58 @@
     <script src="{{asset('js/dataTables.responsive.min.js')}}"></script>
     <script src="{{asset('js/responsive.bootstrap4.min.js')}}"></script>
     <script src="{{asset('js/demo.datatable-init.js')}}"></script>
-
     <!-- Datatable Init js -->
     <script>
-            $("#teacherSearch").change(function () {
+        function downloadCSV(filename, rows) {
+            // Tạo một chuỗi CSV từ các rows
+            var csv = '\uFEFF'; // BOM (Byte Order Mark) để chuẩn bị cho UTF-8
+            for (var i = 0; i < rows.length; i++) {
+                var row = rows[i];
+                for (var j = 0; j < row.length; j++) {
+                    var cell = row[j];
+                    // Thay thế các dấu phẩy bằng khoảng trắng trong cell để tránh lỗi
+                    cell = cell.toString().replace(/,/g, ' ');
+                    // Đóng gói cell trong dấu ngoặc kép
+                    if (/["\r\n]/.test(cell)) {
+                        cell = '"' + cell.replace(/"/g, '""') + '"';
+                    }
+                    csv += cell;
+                    // Thêm dấu phẩy vào sau cell, trừ cell cuối cùng của hàng
+                    if (j < row.length - 1) {
+                        csv += ',';
+                    }
+                }
+                // Thêm dòng mới sau hàng
+                csv += '\r\n';
+            }
 
-                $("#search").submit();
-            });
-            $("#timeSearch").change(function () {
+            // Tạo link tải xuống
+            var link = document.createElement('a');
+            link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv));
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
 
-                $("#search").submit();
-            });
+        // Sử dụng hàm downloadCSV để export table
+
+        $("#export").click(function () {
+            var table = document.querySelector('table');
+            var rows = Array.from(table.querySelectorAll('tr')).map(row => Array.from(row.querySelectorAll('th, td')).map(cell => cell.innerText));
+            downloadCSV('data.csv', rows);
+
+        })
+
+        $("#teacherSearch").change(function () {
+
+            $("#search").submit();
+        });
+        $("#timeSearch").change(function () {
+
+            $("#search").submit();
+        });
+
         function hideModal(id) {
             console.log(id)
             $("#teachers" + id).empty();
@@ -262,8 +307,8 @@
                     time_end: time_end,
                 },
                 success: function (data) {
-                    data[0].forEach(function(item,i){
-                        if(data[1].includes(item.id)){
+                    data[0].forEach(function (item, i) {
+                        if (data[1].includes(item.id)) {
                             data[0].splice(i, 1);
                             data[0].unshift(item);
                         }

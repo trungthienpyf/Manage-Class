@@ -15,6 +15,9 @@ class ClassStudent extends Model
         'student_id',
         'status',
         'payment',
+        'payment',
+        'date',
+        'money',
     ];
     public $timestamps=false;
     public $incrementing = false;
